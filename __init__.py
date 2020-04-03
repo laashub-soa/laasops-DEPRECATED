@@ -27,11 +27,11 @@ def index():
 
 
 from distribution import distribution
-from distribution import oauth
+# from distribution import oauth
 from engine import engine
 
 app.register_blueprint(distribution.app)
-app.register_blueprint(oauth.app)
+# app.register_blueprint(oauth.app)
 app.register_blueprint(engine.app)
 
 # init the log
