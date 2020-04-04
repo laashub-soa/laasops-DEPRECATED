@@ -1,5 +1,7 @@
 <template>
-
+  <div id="DesignerDataDirectory">
+    DesignerDataDirectory
+  </div>
 </template>
 
 <script>
