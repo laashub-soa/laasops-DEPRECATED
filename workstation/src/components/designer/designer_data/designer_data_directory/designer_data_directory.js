@@ -24,7 +24,6 @@ function init_designer_data_directory_tree_view() {
         if (vue_data.data_data) {
             tree_edit_data = [];
         }
-
         tree.render({
             elem: '#designer_data_directory_tree'
             , data: vue_data.designer_data_directory.tree
