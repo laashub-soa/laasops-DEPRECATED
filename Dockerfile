@@ -17,7 +17,7 @@ COPY requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 RUN find . | grep -E "(__pycache__|\.pyc|\.pyo$)" | xargs rm -rf
-RUN python3 -m compileall .
+RUN python3 -m compileall -b .
 RUN find . -name "*.py" |xargs rm -rf
 # 复制前端到后端中
 RUN rm -rf workstation
@@ -28,4 +28,4 @@ VOLUME /usr/src/app/configs
 VOLUME /usr/src/app/distribution/configs
 VOLUME /usr/src/app/engine_logic_dir
 EXPOSE 5000
-CMD [ "python", "./__pycache__/setup.cpython-36.pyc" ]
+CMD [ "python", "./setup.pyc" ]
