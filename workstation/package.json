@@ -1,8 +1,8 @@
 {
-  "name": "vue_addname",
-  "version": "1.0.0",
-  "description": "demo",
-  "author": "chenyuanjun",
+  "name": "workstation",
+  "version": "0.0.1",
+  "description": "workstation for laasops",
+  "author": "tristan-tsl",
   "private": true,
   "scripts": {
     "dev": "node build/dev-server.js",

@@ -28,4 +28,4 @@ VOLUME /usr/src/app/configs
 VOLUME /usr/src/app/distribution/configs
 VOLUME /usr/src/app/engine_logic_dir
 EXPOSE 5000
-CMD [ "python", "./setup.pyc" ]
+CMD [ "python", "./__pycache__/setup.cpython-36.pyc" ]
