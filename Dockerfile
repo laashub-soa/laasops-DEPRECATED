@@ -1,17 +1,26 @@
-# 编译nodejs为js
-#FROM node:12.16.1 as frontend
+# 前台
+FROM node:12.16.1 as frontend
+WORKDIR /usr/src/app
+COPY . .
+RUN rm -rf /usr/src/app/workstation/dist
+RUN npm config set registry https://registry.npm.taobao.org --global
+RUN npm config set disturl https://npm.taobao.org/dist --global
+RUN npm install
+RUN npm run build
+# 后台
 FROM python:3.6
 WORKDIR /usr/src/app
 RUN rm -rf *
 COPY requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
-#COPY --from=frontend /tes /test
-RUN echo "编译整体项目"
+RUN find . | grep -E "(__pycache__|\.pyc|\.pyo$)" | xargs rm -rf
+RUN rm -rf /usr/src/app/workstation
+COPY --from=frontend /usr/src/app/workstation/dist /usr/src/app/workstation/dist
 RUN python3 -m compileall .
-RUN echo "删除python文件"
 RUN find . -name "*.py" |xargs rm -rf
-MAINTAINER tristan "https://github.com/tristan-tsl"
+# 声明
+MAINTAINER tristan "https://github.com/tristan-tsl/laasops"
 VOLUME /usr/src/app/distribution/configs
 VOLUME /usr/src/app/engine_logic_dir
 EXPOSE 5000
