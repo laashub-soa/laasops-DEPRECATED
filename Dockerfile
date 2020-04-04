@@ -24,6 +24,7 @@ RUN rm -rf workstation
 COPY --from=frontend /usr/src/app/workstation/dist /usr/src/app/workstation/dist
 # 声明
 MAINTAINER tristan "https://github.com/tristan-tsl/laasops"
+VOLUME /usr/src/app/configs
 VOLUME /usr/src/app/distribution/configs
 VOLUME /usr/src/app/engine_logic_dir
 EXPOSE 5000
