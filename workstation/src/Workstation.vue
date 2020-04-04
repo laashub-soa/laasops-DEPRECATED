@@ -17,9 +17,9 @@
         methods: {},
         watch: {}
     }
-    // setTimeout(function () {
-    //     window.location.href = "component/Dashboard/index.html";
-    // }, 2000);
+    setTimeout(function () {
+        window.location.href = "/designer";
+    }, 2000);
 </script>
 
 <style>
