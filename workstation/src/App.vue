@@ -1,24 +1,27 @@
-<style scoped>
-    @import 'styles/common.css';
-</style>
 <template>
-    <div>
-        <router-view></router-view>
-    </div>
+  <div id="app">
+    <router-link to='/Designer'>Dashboard</router-link>
+    <br/>
+    <router-link to='/Dashboard'>Designer</router-link>
+  </div>
 </template>
+
 <script>
     export default {
-        data () {
+        name: 'app',
+        data() {
             return {}
         },
-        mounted () {
-
+        components: {
         },
-        beforeDestroy () {
-
-        },
-        methods: {
-
-        }
+        methods: {},
+        watch: {}
     }
+    setTimeout(function () {
+        window.location.href = "/designer";
+    }, 2000);
 </script>
+
+<style>
+
+</style>

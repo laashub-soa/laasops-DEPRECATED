@@ -21,7 +21,7 @@ RUN python3 -m compileall -b .
 RUN find . -name "*.py" |xargs rm -rf
 # 复制前端到后端中
 RUN rm -rf workstation
-COPY --from=frontend /usr/src/app/workstation/dist /usr/src/app/workstation/dist
+COPY --from=frontend /usr/src/app/workstation/dist /usr/src/app/workstation
 # 声明
 MAINTAINER tristan "https://github.com/tristan-tsl/laasops"
 VOLUME /usr/src/app/configs
