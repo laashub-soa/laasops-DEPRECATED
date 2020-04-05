@@ -34,7 +34,7 @@
                         name: 'Node 1',
                         id: 1,
                         pid: 0,
-                        dragDisabled: true,
+                        // dragDisabled: true,
                         children: [
                             {
                                 name: 'Node 1-2',
@@ -43,12 +43,6 @@
                                 pid: 1
                             }
                         ]
-                    },
-                    {
-                        name: 'Node 2',
-                        id: 3,
-                        pid: 0,
-                        disabled: true
                     },
                     {
                         name: 'Node 3',
