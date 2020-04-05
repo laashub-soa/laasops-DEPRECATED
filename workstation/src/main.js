@@ -1,22 +1,20 @@
 import Vue from 'vue'
-import ViewUI from 'view-design';
 import VueRouter from 'vue-router';
-import routers from './router'
-import init from './init'
 import App from './app.vue';
+import routers from './router'
+import ViewUI from 'view-design';
 import 'view-design/dist/styles/iview.css';
-
-
-Vue.config.productionTip = false
+import init from './init'
 
 Vue.use(VueRouter);
 Vue.use(ViewUI);
 
-const RouterConfig = {
+Vue.config.productionTip = false
+
+const router = new VueRouter({
   mode: 'history',
   routes: routers
-};
-const router = new VueRouter(RouterConfig);
+});
 
 init.init();
 

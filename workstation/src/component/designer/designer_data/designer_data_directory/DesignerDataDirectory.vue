@@ -12,13 +12,14 @@
         name: "DesignerDataDirectory",
         data() {
             return {
+                component: null,
                 tree: [],
             }
         },
         methods: {
             async init_designer_data_directory() {
                 try {
-                    const net_request_result = await request.exec_sql(this,{
+                    const net_request_result = await request.exec_sql(this, {
                         "sql": `
                             select id, pid, name, description
                             from designer_data_directory
@@ -75,8 +76,7 @@
             },
         },
         async created() {
-            await this.$options.methods.init_designer_data_directory();
-            // await this.methods.init_tree_view();
+            await this.init_designer_data_directory();
         }
     }
 

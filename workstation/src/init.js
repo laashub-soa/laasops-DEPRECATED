@@ -3,7 +3,11 @@ import axios from 'axios';
 
 function init() {
   // axios
-  axios.defaults.baseURL = "http://" + window.location.host;
+  if ("development" == process.env.NODE_ENV) {
+    axios.defaults.baseURL = "http://localhost:5000";
+  } else {
+    axios.defaults.baseURL = "http://" + window.location.host;
+  }
 
 // string
   String.prototype.format = function () {
