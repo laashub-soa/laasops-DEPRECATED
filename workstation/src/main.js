@@ -1,24 +1,34 @@
-import Vue from 'vue'
+import Vue from 'vue';
 import ViewUI from 'view-design';
 import VueRouter from 'vue-router';
-import routers from './router'
-import init from './init'
-import request from './request'
-
-Vue.config.productionTip = false
+import Routers from './router';
+import Util from './libs/util';
+import App from './app.vue';
+import 'view-design/dist/styles/iview.css';
 
 Vue.use(VueRouter);
 Vue.use(ViewUI);
 
+// 路由配置
 const RouterConfig = {
-  mode: 'history',
-  routes: routers
+    mode: 'history',
+    routes: Routers
 };
 const router = new VueRouter(RouterConfig);
 
-init.init();
-Vue.prototype.request = request;
+router.beforeEach((to, from, next) => {
+    ViewUI.LoadingBar.start();
+    Util.title(to.meta.title);
+    next();
+});
+
+router.afterEach((to, from, next) => {
+    ViewUI.LoadingBar.finish();
+    window.scrollTo(0, 0);
+});
 
 new Vue({
-  router,
-}).$mount('#app')
+    el: '#app',
+    router: router,
+    render: h => h(App)
+});
