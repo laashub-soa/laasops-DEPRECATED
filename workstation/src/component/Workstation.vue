@@ -1,8 +1,10 @@
 <template>
 <div>
-  <router-link to='/designer'>Dashboard</router-link>
+  <router-link to='/designer'>Designer</router-link>
   <br/>
-  <router-link to='/dashboard'>Designer</router-link>
+  <br/>
+  <br/>
+  <router-link to='/dashboard'>Dashboard</router-link>
 </div>
 </template>
 
