@@ -12,31 +12,31 @@ mymysql.init({
 
 if __name__ == '__main__':
     target_id = 38
-    # 查询多条
+    # query all
     print(execute("""
     select * from designer_data_directory
     """))
-    # 查询一条
+    # query with condition
     print(execute("""
     select * from designer_data_directory where id = %(id)s
     """, {
         "id": target_id
     }))
-    # 新增
+    # insert
     print(execute("""
         insert into designer_data_directory(pid, name) values (%(pid)s,%(name)s)
         """, {
         "pid": target_id,
         "name": "test2"
     }))
-    # 修改
+    # update
     print(execute("""
         update designer_data_directory set name = %(name)s where id = %(id)s
         """, {
         "id": target_id,
         "name": "test",
     }))
-    # 删除
+    # delete
     print(execute("""
             delete from designer_data_directory where id = %(id)s
             """, {"id": target_id}))

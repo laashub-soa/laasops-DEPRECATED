@@ -26,13 +26,9 @@ def index():
     return redirect("/index.html")
 
 
-from distribution import distribution
-# from distribution import oauth
-from engine import engine
+from distribution.service.data import directory as data_directory
 
-app.register_blueprint(distribution.app)
-# app.register_blueprint(oauth.app)
-app.register_blueprint(engine.app)
+app.register_blueprint(data_directory.app)
 
 # init the log
 if not os.path.exists("logs"):
