@@ -19,6 +19,13 @@ const routers = [
       title: 'Dashboard'
     },
     component: (resolve) => require(['./component/dashboard/Dashboard'], resolve)
-  }
+  },
+  {
+    path: '/tree',
+    meta: {
+      title: 'tree'
+    },
+    component: (resolve) => require(['./component/designer/designer_data/designer_data_directory/Tree.vue'], resolve)
+  },
 ];
 export default routers;
