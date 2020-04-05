@@ -1,6 +1,6 @@
 <template>
   <div>
-    <button @click="addNode">Add Node</button>
+    <Button @click="addNode">Add Node</Button>
     <vue-tree-list
       @click="onClick"
       @change-name="onChangeName"
@@ -11,10 +11,6 @@
       default-leaf-node-name="new leaf"
       v-bind:default-expanded="true">
     </vue-tree-list>
-    <button @click="getNewTree">Get new tree</button>
-    <pre>
-      {{newTree}}
-    </pre>
   </div>
 </template>
 
