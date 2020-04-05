@@ -12,7 +12,6 @@
         name: "DesignerDataDirectory",
         data() {
             return {
-                component: null,
                 tree: [],
             }
         },
