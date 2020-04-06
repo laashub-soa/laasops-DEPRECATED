@@ -42,14 +42,7 @@
             },
 
             async onAddNode(params) {
-                console.log(params)
-                // special for top level tree node
-                let is_top_level_tree_node = false;
-                if (!params) is_top_level_tree_node = true;
-                if (is_top_level_tree_node) {
-                    params = {name: 'new node', isLeaf: false, addLeafNodeDisabled: true, children: []};
-                }
-                params["addLeafNodeDisabled"] = true;
+                console.log(params);
                 // make sure input data directory name
                 const component = this;
                 component._data.name = "";
@@ -79,9 +72,17 @@
                     })
                 });
                 if ("" == input_name_result) return;
-                if (is_top_level_tree_node) this._data.tree.addChildren(new TreeNode(params));
+                // special for top level tree node
+                let is_top_level_tree_node = false;
+                if (!params) is_top_level_tree_node = true;
+                if (!params){
+                    params = {name: input_name_result, pid: -1, isLeaf: false, addLeafNodeDisabled: true, children: []};
+                    this._data.tree.addChildren(new TreeNode(params));
+                }else{
+                    params["addLeafNodeDisabled"] = true;
+                }
                 // save
-                try{
+                try {
                     const insert_result = await designer_data_directory.insert_designer_data_directory(params);
                     component.$Message.success('insert data directory success');
                 } catch (e) {
