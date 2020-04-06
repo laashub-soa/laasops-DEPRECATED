@@ -1,6 +1,7 @@
 <template>
   <div>
     <Button @click="onAddNode(null)">Add Node</Button>
+    <Button @click="init_tree">Refresh</Button>
     <vue-tree-list
       @click="onClick"
       @change-name="onChangeName"
@@ -189,7 +190,13 @@
             //     vm.newTree = _dfs(vm.data)
             // },
             async init_tree() {
-                this._data.tree = new Tree(await designer_data_directory.query_designer_data_directory());
+                try {
+                    this._data.tree = new Tree(await designer_data_directory.query_designer_data_directory());
+                    this.$Message.success('select data directory success');
+                } catch (e) {
+                    console.log(e);
+                    this.$Message.error(e.response.data);
+                }
             },
         },
         async created() {
