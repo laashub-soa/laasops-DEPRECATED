@@ -188,30 +188,6 @@
                     this.onClickDirectory();
                 }
             },
-
-            // getNewTree() {
-            //     var vm = this
-            //
-            //     function _dfs(oldNode) {
-            //         var newNode = {}
-            //
-            //         for (var k in oldNode) {
-            //             if (k !== 'children' && k !== 'parent') {
-            //                 newNode[k] = oldNode[k]
-            //             }
-            //         }
-            //
-            //         if (oldNode.children && oldNode.children.length > 0) {
-            //             newNode.children = []
-            //             for (var i = 0, len = oldNode.children.length; i < len; i++) {
-            //                 newNode.children.push(_dfs(oldNode.children[i]))
-            //             }
-            //         }
-            //         return newNode
-            //     }
-            //
-            //     vm.newTree = _dfs(vm.data)
-            // },
             async init_tree() {
                 try {
                     this._data.tree = new Tree(await designer_data_directory.query_designer_data_directory());
