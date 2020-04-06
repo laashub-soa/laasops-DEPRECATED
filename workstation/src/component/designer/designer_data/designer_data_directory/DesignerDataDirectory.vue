@@ -81,6 +81,7 @@
                 }else{
                     params["addLeafNodeDisabled"] = true;
                 }
+                params["name"] = input_name_result;
                 // save
                 try {
                     const insert_result = await designer_data_directory.insert_designer_data_directory(params);
@@ -89,7 +90,6 @@
                     console.log(e.response.data);
                     component.$Message.error(e.response.data);
                 }
-
             },
 
             onClick(params) {
