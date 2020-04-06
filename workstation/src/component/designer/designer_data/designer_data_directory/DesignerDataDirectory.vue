@@ -34,7 +34,24 @@
         },
         methods: {
             async onDel(node) {
-                console.log(node)
+                console.log(node);
+                // delete need to confirm
+                const component = this;
+                if (!await new Promise(function (resolve, reject) {
+                    component.$Modal.warning({
+                        title: "tips",
+                        content: "are you ready to delete?",
+                        okText: "YES",
+                        onOk: function () {
+                            resolve(true);
+                        },
+                        closable: true,
+                        onCancel: function () {
+                            resolve(false);
+                        },
+                        cancelText: "NO"
+                    });
+                })) return;
                 // save
                 try {
                     const insert_result = await designer_data_directory.delete_designer_data_directory({
