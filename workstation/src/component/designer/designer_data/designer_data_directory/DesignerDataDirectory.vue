@@ -52,13 +52,10 @@
                 // TODO fix_bug: not every event need to response
                 console.log(params)
                 const input_name_result = params["newName"];
-                const regex = /^[a-z0-9_\-]+$/ig;
-                if (!regex.test(input_name_result) || "" == input_name_result) {
-                    params["newName"] = params["oldName"]
-                    this.$Message.error("illegal character");
+                if ("" == input_name_result) {
+                    this.$Message.error("name can't be blank character");
                     return;
                 }
-
                 // save
                 try {
                     const insert_result = await designer_data_directory.update_designer_data_directory({
@@ -103,11 +100,6 @@
                     })
                 });
                 if ("" == input_name_result) return;
-                const regex = /^[a-z0-9_\-]+$/ig;
-                if (!regex.test(input_name_result)) {
-                    this.$Message.error("illegal character");
-                    return;
-                }
                 // special for top level tree node
                 if (!params) {
                     params = {name: input_name_result, pid: -1, isLeaf: false, addLeafNodeDisabled: true, children: []};
