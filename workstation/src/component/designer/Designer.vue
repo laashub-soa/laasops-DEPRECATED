@@ -22,9 +22,9 @@
                 id: {{breadcrumb.cur_selected_id}}
       </span>
     </div>
-    <div style="height: 96vh;border: 1px solid #d6d6d6;">
+    <div style="height: 92vh;border: 1px solid #d6d6d6;">
         <span style="height:97vh;">
-            <Split v-model="split" style="width: 94vw">
+            <Split v-model="split" style="width: 100vw">
                 <div slot="left">
                     <DesignerDataDirectory @click-directory="OnClickDirectory"
                                            v-show="menu_active_name=='data'"></DesignerDataDirectory>
