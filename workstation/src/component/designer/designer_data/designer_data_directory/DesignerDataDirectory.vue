@@ -131,6 +131,7 @@
                         "pid": params["pid"],
                         "name": params["name"],
                     });
+                    params["id"] = insert_result;
                     this.$Message.success('insert data directory success');
                 } catch (e) {
                     console.log(e);
