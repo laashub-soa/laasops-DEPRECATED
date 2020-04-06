@@ -1,7 +1,7 @@
 <template>
   <div>
-    <Button @click="onAddNode(null)">Add Node</Button>
     <Button @click="init_tree">Refresh</Button>
+    <Button @click="onAddNode(null)">Add Node</Button>
     <vue-tree-list
       @click="onClick"
       @change-name="onChangeName"
