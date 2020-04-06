@@ -117,21 +117,30 @@
                     })
                 });
                 if ("" == input_name_result) return;
+                let pid = -1;
                 // special for top level tree node
-                if (!params) {
-                    params = {name: input_name_result, pid: -1, isLeaf: false, addLeafNodeDisabled: true, children: []};
-                    this._data.tree.addChildren(new TreeNode(params));
-                } else {
+                if (params) {
+                    pid = params["pid"];
                     params["addLeafNodeDisabled"] = true;
                     params["name"] = input_name_result;
                 }
                 // save
                 try {
                     const insert_result = await designer_data_directory.insert_designer_data_directory({
-                        "pid": params["pid"],
-                        "name": params["name"],
+                        "pid": pid,
+                        "name": input_name_result,
                     });
-                    params["id"] = insert_result;
+                    if (!params) {
+                        params = {
+                            id: insert_result,
+                            name: input_name_result,
+                            pid: pid,
+                            isLeaf: false,
+                            addLeafNodeDisabled: true,
+                            children: []
+                        };
+                        this._data.tree.addChildren(new TreeNode(params));
+                    }
                     this.$Message.success('insert data directory success');
                 } catch (e) {
                     console.log(e);
