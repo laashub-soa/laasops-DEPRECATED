@@ -9,14 +9,14 @@
       :model="data"
       default-tree-node-name="new node"
       default-leaf-node-name="new leaf"
-      v-bind:default-expanded="true">
+      v-bind:default-expanded="true"
+    >
     </vue-tree-list>
   </div>
 </template>
 
 <script>
     import {Tree, TreeNode, VueTreeList} from 'vue-tree-list'
-    import request from "../../../../request.js";
 
     export default {
         name: "DesignerDataDirectory",
@@ -32,20 +32,14 @@
                         name: 'Node 1',
                         id: 1,
                         pid: 0,
+                        addLeafNodeDisabled: true,
                         // dragDisabled: true,
-                        children: [
-                            {
-                                name: 'Node 1-2',
-                                id: 2,
-                                isLeaf: true,
-                                pid: 1
-                            }
-                        ]
                     },
                     {
                         name: 'Node 3',
                         id: 4,
-                        pid: 0
+                        pid: 0,
+                        addLeafNodeDisabled: true,
                     }
                 ])
             }
@@ -53,12 +47,12 @@
         methods: {
             async init_designer_data_directory() {
                 try {
-                    const net_request_result = await request.exec_sql(this, {
-                        "sql": `
-                            select id, pid, name, description
-                            from designer_data_directory
-                        `,
-                    });
+                    // const net_request_result = await request.exec_sql(this, {
+                    //     "sql": `
+                    //         select id, pid, name, description
+                    //         from designer_data_directory
+                    //     `,
+                    // });
                     //     if (!net_request_result || !net_request_result.status || net_request_result.status != 200 || !net_request_result.data) return;
                     //     let original_tree_list = net_request_result.data;
                     //     // adapter list to tree
@@ -163,9 +157,7 @@
 
 </script>
 
-<style scoped>
-  @import '~view-design/dist/styles/iview.css';
-</style>
+
 <style lang="less" rel="stylesheet/less">
   .vtl {
     .vtl-drag-disabled {
@@ -188,4 +180,11 @@
       cursor: pointer;
     }
   }
+</style>
+<style>
+  .vtl-node-main .vtl-operation {
+    margin-left: 2rem;
+    letter-spacing: 10px;
+  }
+  @import '~view-design/dist/styles/iview.css';
 </style>
