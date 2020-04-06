@@ -5,9 +5,10 @@ from flask_cors import CORS
 
 urllib3.disable_warnings()
 # init the web framework
-from flask import Flask, redirect
+from flask import Flask, redirect, make_response
 import logging
 from logging.handlers import TimedRotatingFileHandler
+from distribution.exception import MyServiceException
 
 app = Flask(__name__, static_folder='workstation')
 
@@ -26,9 +27,19 @@ def index():
     return redirect("/index.html")
 
 
-from distribution.service.data import directory as data_directory
+@app.errorhandler(500)
+def error(e):
+    if isinstance(e, MyServiceException):
+        print("e.msg: ", e.msg)
+        custom_res = make_response(e.msg)
+        custom_res.status = "500"
+        return custom_res
+    return e
 
-app.register_blueprint(data_directory.app)
+
+from distribution.service.data import directory as distribution_data_directory
+
+app.register_blueprint(distribution_data_directory.app)
 
 # init the log
 if not os.path.exists("logs"):
