@@ -23,6 +23,13 @@
 
     export default {
         name: "DesignerDataDirectory",
+        props:{
+            onDelDirectory: Function,
+            onChangeDirectory: Function,
+            onAddDirectory: Function,
+            onDropDirectory: Function,
+            onClickDirectory: Function,
+        },
         components: {
             VueTreeList
         },
@@ -64,6 +71,9 @@
                     this.$Message.error(e.response.data);
                 }
                 node.remove();
+                if (this.OnDelDirectory){
+                    this.OnDelDirectory();
+                }
             },
 
             async onChangeName(params) {
@@ -81,10 +91,14 @@
                         "name": input_name_result,
                     });
                     this.$Message.success('update data directory name success');
+                    if (this.onChangeDirectory){
+                        this.onChangeDirectory();
+                    }
                 } catch (e) {
                     console.log(e);
                     this.$Message.error(e.response.data);
                 }
+
             },
 
             async onAddNode(params) {
@@ -143,6 +157,9 @@
                         this._data.tree.addChildren(new TreeNode(params));
                     }
                     this.$Message.success('insert data directory success');
+                    if (this.onAddDirectory){
+                        this.onAddDirectory();
+                    }
                 } catch (e) {
                     console.log(e);
                     this.$Message.error(e.response.data);
@@ -157,13 +174,19 @@
                         "pid": params["target"]["id"],
                     });
                     this.$Message.success('update data directory name success');
+                    if (this.onDropDirectory){
+                        this.onDropDirectory();
+                    }
                 } catch (e) {
                     console.log(e);
                     this.$Message.error(e.response.data);
                 }
             },
             onClick(params) {
-                console.log(params)
+                console.log(params);
+                if (this.onClickDirectory){
+                    this.onClickDirectory();
+                }
             },
 
             // getNewTree() {
