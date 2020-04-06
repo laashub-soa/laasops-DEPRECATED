@@ -59,9 +59,8 @@
                             // TODO improvement: input box can autofocus
                             return h('Input', {
                                 props: {
-                                    value: component._data.name,
                                     autofocus: true,
-                                    placeholder: 'Please enter directory name...',
+                                    placeholder: 'Please enter directory name(a-z0-9_)...',
                                 },
                                 on: {
                                     input: (val) => {
@@ -73,6 +72,11 @@
                     })
                 });
                 if ("" == input_name_result) return;
+                const regex=/^[a-z0-9_\-]+$/ig;
+                if (!regex.test(input_name_result)){
+                    component.$Message.error("illegal character");
+                    return;
+                }
                 // special for top level tree node
                 let is_top_level_tree_node = false;
                 if (!params) is_top_level_tree_node = true;
