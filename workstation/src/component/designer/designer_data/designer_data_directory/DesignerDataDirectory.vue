@@ -79,8 +79,15 @@
                     })
                 });
                 if ("" == input_name_result) return;
-                if (is_top_level_tree_node)this._data.tree.addChildren(new TreeNode(params));
+                if (is_top_level_tree_node) this._data.tree.addChildren(new TreeNode(params));
                 // save
+                try{
+                    const insert_result = await designer_data_directory.insert_designer_data_directory(params);
+                    component.$Message.success('insert data directory success');
+                } catch (e) {
+                    console.log(e.response.data);
+                    component.$Message.error(e.response.data);
+                }
 
             },
 

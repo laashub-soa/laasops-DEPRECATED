@@ -35,9 +35,18 @@ async function query_designer_data_directory() {
     }
     return cur_tree_level;
   }
+
   return setup_tree(-1, '');
 }
 
+async function insert_designer_data_directory(data_directory) {
+  let net_request_result = await axios.post("/distribution/data/directory/insert", data_directory);
+  if (!net_request_result || !net_request_result.status || net_request_result.status != 200 || !net_request_result.data) return;
+  return net_request_result.data;
+}
+
+
 export default {
-  query_designer_data_directory
+  query_designer_data_directory,
+  insert_designer_data_directory
 }
