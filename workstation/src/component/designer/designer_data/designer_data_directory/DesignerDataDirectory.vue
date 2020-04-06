@@ -18,6 +18,7 @@
 <script>
     import {Tree, TreeNode, VueTreeList} from 'vue-tree-list'
     import designer_data_directory from './designer_data_directory.js'
+
     export default {
         name: "DesignerDataDirectory",
         components: {
@@ -26,6 +27,7 @@
         data() {
             return {
                 tree: new Tree([]),
+                name: "",
                 newTree: {},
             }
         },
@@ -39,13 +41,47 @@
                 console.log(params)
             },
 
-            onAddNode(params) {
-                if (!params){
-                    var node = new TreeNode({name: 'new node', isLeaf: false,addLeafNodeDisabled: true,})
-                    if (!this.data.children) this.data.children = []
-                    this.data.addChildren(node)
-                }
+            async onAddNode(params) {
                 console.log(params)
+                // special for top level tree node
+                let is_top_level_tree_node = false;
+                if (!params) is_top_level_tree_node = true;
+                if (is_top_level_tree_node) {
+                    params = {name: 'new node', isLeaf: false, addLeafNodeDisabled: true, children: []};
+                }
+                params["addLeafNodeDisabled"] = true;
+                // make sure input data directory name
+                const component = this;
+                component._data.name = "";
+                const input_name_result = await new Promise(function (resolve, reject) {
+                    component.$Modal.confirm({
+                        onOk: () => {
+                            resolve(component._data.name);
+                        },
+                        onCancel: () => {
+                            component._data.name = "";
+                            resolve(component._data.name);
+                        },
+                        render: (h) => {
+                            return h('Input', {
+                                props: {
+                                    value: component._data.name,
+                                    autofocus: true,
+                                    placeholder: 'Please enter directory name...'
+                                },
+                                on: {
+                                    input: (val) => {
+                                        component._data.name = val;
+                                    }
+                                }
+                            })
+                        }
+                    })
+                });
+                if ("" == input_name_result) return;
+                if (is_top_level_tree_node)this._data.tree.addChildren(new TreeNode(params));
+                // save
+
             },
 
             onClick(params) {
@@ -75,9 +111,12 @@
 
                 vm.newTree = _dfs(vm.data)
             },
+            async init_tree() {
+                this._data.tree = new Tree(await designer_data_directory.query_designer_data_directory());
+            },
         },
         async created() {
-            this._data.tree = new Tree(await designer_data_directory.query_designer_data_directory());
+            await this.init_tree();
         },
 
     }
@@ -113,5 +152,6 @@
     margin-left: 2rem;
     letter-spacing: 10px;
   }
+
   @import '~view-design/dist/styles/iview.css';
 </style>

@@ -25,6 +25,7 @@ async function query_designer_data_directory() {
 
         // tree element special attribution
         cur_tree_data["addLeafNodeDisabled"] = true; // disable the leaf
+        cur_tree_data["isLeaf"] = false; // disable the leaf
 
         if (next_tree_level.length > 0) {
           cur_tree_data[children_str] = next_tree_level;
