@@ -72,27 +72,29 @@
                     })
                 });
                 if ("" == input_name_result) return;
-                const regex=/^[a-z0-9_\-]+$/ig;
-                if (!regex.test(input_name_result)){
+                const regex = /^[a-z0-9_\-]+$/ig;
+                if (!regex.test(input_name_result)) {
                     component.$Message.error("illegal character");
                     return;
                 }
                 // special for top level tree node
-                let is_top_level_tree_node = false;
-                if (!params) is_top_level_tree_node = true;
+                debugger
                 if (!params) {
                     params = {name: input_name_result, pid: -1, isLeaf: false, addLeafNodeDisabled: true, children: []};
                     this._data.tree.addChildren(new TreeNode(params));
                 } else {
                     params["addLeafNodeDisabled"] = true;
+                    params["name"] = input_name_result;
                 }
-                params["name"] = input_name_result;
                 // save
                 try {
-                    const insert_result = await designer_data_directory.insert_designer_data_directory(params);
+                    const insert_result = await designer_data_directory.insert_designer_data_directory({
+                        "pid": params["pid"],
+                        "name": params["name"],
+                    });
                     component.$Message.success('insert data directory success');
                 } catch (e) {
-                    console.log(e.response.data);
+                    console.log(e);
                     component.$Message.error(e.response.data);
                 }
             },

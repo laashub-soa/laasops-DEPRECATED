@@ -31,6 +31,8 @@ def insert():
         raise MyServiceException("missing param: name")
     name = request_data["name"]
 
+    print("pid:", pid, "name: ", name)
+
     return json.dumps(mymysql.execute("""
         insert into designer_data_directory(pid, name) values (%(pid)s, %(name)s)
     """, {
