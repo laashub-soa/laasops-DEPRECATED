@@ -85,6 +85,18 @@
             },
             OnClickDirectory(directory) {
                 console.log(directory);
+                const _id = directory["id"];
+                // set breadcrumb
+                const breadcrumb_list = [directory["name"]];
+                this._data.breadcrumb.cur_selected_id = _id;
+                let parent = directory["parent"];
+                while (parent) {
+                    breadcrumb_list.push(parent["name"]);
+                    if (parent["parent"]) parent = parent["parent"];
+                    else parent = null;
+                }
+                this._data.breadcrumb.list = breadcrumb_list.reverse();
+                // update the right panel
 
             },
         },
