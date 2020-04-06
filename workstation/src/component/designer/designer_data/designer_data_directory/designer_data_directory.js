@@ -28,12 +28,12 @@ async function query_designer_data_directory() {
         cur_tree_data["isLeaf"] = false; // disable the leaf
 
         if (next_tree_level.length > 0) {
-          cur_tree_data[children_str] = next_tree_level;
+          cur_tree_data[children_str] = next_tree_level.reverse();
         }
         cur_tree_level.push(cur_tree_data);
       }
     }
-    return cur_tree_level;
+    return cur_tree_level.reverse();
   }
 
   return setup_tree(-1, '');

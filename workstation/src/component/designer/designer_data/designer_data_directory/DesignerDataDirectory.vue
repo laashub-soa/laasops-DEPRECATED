@@ -56,11 +56,12 @@
                             resolve(component._data.name);
                         },
                         render: (h) => {
+                            // TODO improvement: input box can autofocus
                             return h('Input', {
                                 props: {
                                     value: component._data.name,
                                     autofocus: true,
-                                    placeholder: 'Please enter directory name...'
+                                    placeholder: 'Please enter directory name...',
                                 },
                                 on: {
                                     input: (val) => {
@@ -75,10 +76,10 @@
                 // special for top level tree node
                 let is_top_level_tree_node = false;
                 if (!params) is_top_level_tree_node = true;
-                if (!params){
+                if (!params) {
                     params = {name: input_name_result, pid: -1, isLeaf: false, addLeafNodeDisabled: true, children: []};
                     this._data.tree.addChildren(new TreeNode(params));
-                }else{
+                } else {
                     params["addLeafNodeDisabled"] = true;
                 }
                 params["name"] = input_name_result;
