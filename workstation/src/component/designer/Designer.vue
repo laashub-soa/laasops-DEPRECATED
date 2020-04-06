@@ -91,8 +91,23 @@
                     else parent = null;
                 }
                 this._data.breadcrumb.list = breadcrumb_list.reverse();
-                // update the right panel
 
+                // update the right panel
+                const tab_pane_id = _id;
+                for (const index in this._data.tab_pane) {
+                    const item = this._data.tab_pane[index];
+                    if (item['name'] == _id) return;
+                    this._data.tab_pane.splice(index, 1);
+                    break;
+                }
+                this._data.tab_pane.push({
+                    'type': 'data',
+                    'name': tab_pane_id,
+                    'label': name,
+                    'visible': true,
+                    'icon': 'md-albums',
+                });
+                this._data.tab_pane_cur = this._data.tab_pane.length - 1;
             },
         },
     }
