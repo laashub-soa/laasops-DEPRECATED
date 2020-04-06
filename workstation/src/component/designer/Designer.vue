@@ -1,6 +1,6 @@
 <template>
   <div style="height: 100vh">
-    <div style="height: 3vh;">
+    <div style="height: 30px;">
       <span>
         <Breadcrumb>
             <BreadcrumbItem v-for="item in breadcrumb.list">
@@ -12,7 +12,7 @@
                 id: {{breadcrumb.cur_selected_id}}
       </span>
     </div>
-    <div style="height: 97vh;border: 1px solid #d6d6d6;">
+    <div style="height: 96vh;border: 1px solid #d6d6d6;">
       <span style="height: 100%;width: 40px;float: left;border: 1px solid #dcdee2">
           <i-menu theme="dark" width="auto" :active-name="menu_active_name" @on-select="handleMenuSelect">
               <!--writing-mode: vertical-lr;-->
