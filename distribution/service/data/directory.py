@@ -67,17 +67,32 @@ def update():
 @app.route('/delete', methods=['POST'])
 def delete():
     request_data = json.loads(request.get_data())
-    params = {}
-
     if not request_data.__contains__("id"):
         raise MyServiceException("missing param: id")
-    params["id"] = request_data["id"]
 
-    return json.dumps(mymysql.execute("""
-        delete
-        from designer_data_directory
-        where id = %(id)s
-    """, params))
+    def get_children(_id):
+        return mymysql.execute("""
+            select id
+            from designer_data_directory
+            where pid = %(id)s
+            """, {"id": _id})
+
+    def delete_one_level(_id):
+        return mymysql.execute("""
+            delete
+            from designer_data_directory
+            where id = %(id)s
+            """, {"id": _id})
+
+    def do_delete(_id):
+        children = get_children(_id)
+        if len(children) > 0:
+            for item in children:
+                do_delete(item["id"])
+        delete_one_level(_id)
+
+    do_delete(request_data["id"])
+    return ""
 
 
 @app.route('/fork', methods=['POST'])
