@@ -23,12 +23,12 @@
 
     export default {
         name: "DesignerDataDirectory",
-        props:{
-            onDelDirectory: Function,
-            onChangeDirectory: Function,
-            onAddDirectory: Function,
-            onDropDirectory: Function,
-            onClickDirectory: Function,
+        props: {
+            "del-directory": Function,
+            "change-directory": Function,
+            "add-directory": Function,
+            "drop-directory": Function,
+            "click-directory": Function,
         },
         components: {
             VueTreeList
@@ -71,9 +71,7 @@
                     this.$Message.error(e.response.data);
                 }
                 node.remove();
-                if (this.OnDelDirectory){
-                    this.OnDelDirectory();
-                }
+                this.$emit('del-directory', node);
             },
 
             async onChangeName(params) {
@@ -91,9 +89,7 @@
                         "name": input_name_result,
                     });
                     this.$Message.success('update data directory name success');
-                    if (this.onChangeDirectory){
-                        this.onChangeDirectory();
-                    }
+                    this.$emit('change-directory', params);
                 } catch (e) {
                     console.log(e);
                     this.$Message.error(e.response.data);
@@ -157,9 +153,7 @@
                         this._data.tree.addChildren(new TreeNode(params));
                     }
                     this.$Message.success('insert data directory success');
-                    if (this.onAddDirectory){
-                        this.onAddDirectory();
-                    }
+                    this.$emit('add-directory', params);
                 } catch (e) {
                     console.log(e);
                     this.$Message.error(e.response.data);
@@ -174,9 +168,7 @@
                         "pid": params["target"]["id"],
                     });
                     this.$Message.success('update data directory name success');
-                    if (this.onDropDirectory){
-                        this.onDropDirectory();
-                    }
+                    this.$emit('drop-directory', params);
                 } catch (e) {
                     console.log(e);
                     this.$Message.error(e.response.data);
@@ -184,9 +176,7 @@
             },
             onClick(params) {
                 console.log(params);
-                if (this.onClickDirectory){
-                    this.onClickDirectory();
-                }
+                this.$emit('click-directory', params);
             },
             async init_tree() {
                 try {

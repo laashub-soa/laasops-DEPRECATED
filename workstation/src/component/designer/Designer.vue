@@ -28,7 +28,8 @@
       <span style="width: 94vw;height:97vh;">
             <Split v-model="split">
                 <div slot="left" style="margin-left: 40px">
-                    <DesignerDataDirectory v-show="menu_active_name=='data'"></DesignerDataDirectory>
+                    <DesignerDataDirectory @click-directory="OnClickDirectory"
+                                           v-show="menu_active_name=='data'"></DesignerDataDirectory>
                   <!--v-show="menu_active_name=='logic'"-->
                 </div>
                 <div slot="right">
@@ -81,6 +82,10 @@
         methods: {
             handleTabRemove(name) {
                 this._data.tab_pane[name]["visible"] = false;
+            },
+            OnClickDirectory(directory) {
+                console.log(directory);
+
             },
         },
     }
