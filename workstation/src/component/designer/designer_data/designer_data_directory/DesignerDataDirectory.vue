@@ -224,7 +224,7 @@
     }
   }
 </style>
-<style scoped>
+<style>
   .vtl-node-main .vtl-operation {
     letter-spacing: 10px;
   }
