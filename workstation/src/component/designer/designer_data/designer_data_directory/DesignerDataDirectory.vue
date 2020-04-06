@@ -6,7 +6,7 @@
       @change-name="onChangeName"
       @delete-node="onDel"
       @add-node="onAddNode"
-      :model="data"
+      :model="tree"
       default-tree-node-name="new node"
       default-leaf-node-name="new leaf"
       v-bind:default-expanded="true"
@@ -25,23 +25,8 @@
         },
         data() {
             return {
-                tree: [],
+                tree: new Tree([]),
                 newTree: {},
-                data: new Tree([
-                    {
-                        name: 'Node 1',
-                        id: 1,
-                        pid: 0,
-                        addLeafNodeDisabled: true,
-                        // dragDisabled: true,
-                    },
-                    {
-                        name: 'Node 3',
-                        id: 4,
-                        pid: 0,
-                        addLeafNodeDisabled: true,
-                    }
-                ])
             }
         },
         methods: {
@@ -92,7 +77,7 @@
             },
         },
         async created() {
-            await designer_data_directory.query_designer_data_directory();
+            this._data.tree = new Tree(await designer_data_directory.query_designer_data_directory());
         },
 
     }

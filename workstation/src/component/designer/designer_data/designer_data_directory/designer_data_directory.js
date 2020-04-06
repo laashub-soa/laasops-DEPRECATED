@@ -2,8 +2,10 @@ import axios from "axios";
 
 async function query_designer_data_directory() {
   let net_request_result = await axios.post("/distribution/data/directory/select", {});
+  if (!net_request_result || !net_request_result.status || net_request_result.status != 200 || !net_request_result.data) return;
+  let original_tree_list = net_request_result.data;
   // adapter list to tree
-  const name_str = "title";
+  const name_str = "name";
   const description_str = "description";
   const children_str = "children";
 
@@ -20,7 +22,10 @@ async function query_designer_data_directory() {
         cur_tree_data["cur_level_str"] = cur_level_str;
         cur_tree_data[name_str] = originalTreeListElement["name"];
         cur_tree_data[description_str] = originalTreeListElement[description_str];
-        cur_tree_data["spread"] = true;
+
+        // tree element special attribution
+        cur_tree_data["addLeafNodeDisabled"] = true; // disable the leaf
+
         if (next_tree_level.length > 0) {
           cur_tree_data[children_str] = next_tree_level;
         }
@@ -29,7 +34,7 @@ async function query_designer_data_directory() {
     }
     return cur_tree_level;
   }
-  const tree_data = setup_tree(0, '');
+  return setup_tree(-1, '');
 }
 
 export default {
