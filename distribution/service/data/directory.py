@@ -31,8 +31,6 @@ def insert():
         raise MyServiceException("missing param: name")
     name = request_data["name"]
 
-    print("pid:", pid, "name: ", name)
-
     return json.dumps(mymysql.execute("""
         insert into designer_data_directory(pid, name) values (%(pid)s, %(name)s)
     """, {
@@ -41,8 +39,32 @@ def insert():
     }))
 
 
+@app.route('/update', methods=['POST'])
 def update():
-    pass
+    request_data = json.loads(request.get_data())
+    params = {}
+    update_set_sql_str = ""
+
+    if not request_data.__contains__("id"):
+        raise MyServiceException("missing param: id")
+    params["id"] = request_data["id"]
+
+    if request_data.__contains__("name"):
+        params["name"] = request_data["name"]
+        update_set_sql_str = "set name=%(name)s"
+
+    if request_data.__contains__("pid"):
+        params["pid"] = request_data["pid"]
+        update_set_sql_str = "set pid=%(pid)s"
+
+    if "" == update_set_sql_str:
+        raise MyServiceException("no content for update set")
+
+    return json.dumps(mymysql.execute("""
+        update designer_data_directory
+        %s
+        where id = %(id)s
+    """ % update_set_sql_str, params))
 
 
 def delete():
