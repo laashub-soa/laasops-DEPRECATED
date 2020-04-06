@@ -1,6 +1,16 @@
 <template>
   <div style="height: 100vh">
-    <div style="height: 30px;">
+    <div >
+      <Menu style="font-size: 10px" mode="horizontal" theme="light" :active-name="menu_active_name"
+              @on-select="function(name){menu_active_name = name}">
+        <!--writing-mode: vertical-lr;-->
+        <MenuItem name="data" width="40px" style="user-select:none;">
+          Data
+        </MenuItem>
+        <MenuItem name="logic" width="40px" style="user-select:none;">
+          Logic
+        </MenuItem >
+      </Menu>
       <span>
         <Breadcrumb>
             <BreadcrumbItem v-for="item in breadcrumb.list">
@@ -13,21 +23,9 @@
       </span>
     </div>
     <div style="height: 96vh;border: 1px solid #d6d6d6;">
-      <span style="height: 100%;width: 40px;float: left;border: 1px solid #dcdee2">
-          <i-menu theme="light" width="auto" :active-name="menu_active_name"
-                  @on-select="function(name){menu_active_name = name}">
-              <!--writing-mode: vertical-lr;-->
-              <menu-item name="data" width="auto" style="user-select:none;">
-                  Data
-              </menu-item>
-              <menu-item name="logic" width="auto" style="user-select:none;">
-                  Logic
-              </menu-item>
-          </i-menu>
-      </span>
-      <span style="width: 94vw;height:97vh;">
-            <Split v-model="split">
-                <div slot="left" style="margin-left: 40px">
+        <span style="height:97vh;">
+            <Split v-model="split" style="width: 94vw">
+                <div slot="left">
                     <DesignerDataDirectory @click-directory="OnClickDirectory"
                                            v-show="menu_active_name=='data'"></DesignerDataDirectory>
                   <!--v-show="menu_active_name=='logic'"-->
@@ -48,9 +46,6 @@
             </Split>
         </span>
     </div>
-
-
-    <!--    <DesignerDataDirectory></DesignerDataDirectory>-->
   </div>
 </template>
 
@@ -126,5 +121,9 @@
   .ivu-breadcrumb {
     font-size: 22px;
     float: left;
+  }
+  .ivu-menu-horizontal {
+    height: 30px;
+    line-height: 30px;
   }
 </style>
