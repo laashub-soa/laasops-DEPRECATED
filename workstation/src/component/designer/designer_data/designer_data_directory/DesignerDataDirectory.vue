@@ -201,7 +201,7 @@
 </script>
 
 
-<style lang="less" rel="stylesheet/less">
+<style lang="less" rel="stylesheet/less" scoped>
   .vtl {
     .vtl-drag-disabled {
       background-color: #d0cfcf;
@@ -224,9 +224,8 @@
     }
   }
 </style>
-<style>
+<style scoped>
   .vtl-node-main .vtl-operation {
-    margin-left: 2rem;
     letter-spacing: 10px;
   }
 
