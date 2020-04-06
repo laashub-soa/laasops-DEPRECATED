@@ -29,6 +29,7 @@ def index():
 
 @app.errorhandler(500)
 def error(e):
+    e = e.original_exception
     if isinstance(e, MyServiceException):
         print("e.msg: ", e.msg)
         custom_res = make_response(e.msg)

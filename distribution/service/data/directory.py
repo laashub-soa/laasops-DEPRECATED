@@ -60,11 +60,7 @@ def update():
     if "" == update_set_sql_str:
         raise MyServiceException("no content for update set")
 
-    return json.dumps(mymysql.execute("""
-        update designer_data_directory
-        %s
-        where id = %(id)s
-    """ % update_set_sql_str, params))
+    return json.dumps(mymysql.execute("update designer_data_directory "+update_set_sql_str+" where id = %(id)s", params))
 
 
 def delete():

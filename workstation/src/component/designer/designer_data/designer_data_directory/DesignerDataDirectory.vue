@@ -37,8 +37,28 @@
                 node.remove()
             },
 
-            onChangeName(params) {
+            async onChangeName(params) {
+                // TODO fix_bug: not every event need to response
                 console.log(params)
+                const input_name_result = params["newName"];
+                const regex = /^[a-z0-9_\-]+$/ig;
+                if (!regex.test(input_name_result) || "" == input_name_result) {
+                    params["newName"] = params["oldName"]
+                    this.$Message.error("illegal character");
+                    return;
+                }
+
+                // save
+                try {
+                    const insert_result = await designer_data_directory.update_designer_data_directory({
+                        "id": params["id"],
+                        "name": input_name_result,
+                    });
+                    this.$Message.success('update data directory name success');
+                } catch (e) {
+                    console.log(e);
+                    this.$Message.error(e.response.data);
+                }
             },
 
             async onAddNode(params) {
@@ -74,11 +94,10 @@
                 if ("" == input_name_result) return;
                 const regex = /^[a-z0-9_\-]+$/ig;
                 if (!regex.test(input_name_result)) {
-                    component.$Message.error("illegal character");
+                    this.$Message.error("illegal character");
                     return;
                 }
                 // special for top level tree node
-                debugger
                 if (!params) {
                     params = {name: input_name_result, pid: -1, isLeaf: false, addLeafNodeDisabled: true, children: []};
                     this._data.tree.addChildren(new TreeNode(params));
@@ -92,10 +111,10 @@
                         "pid": params["pid"],
                         "name": params["name"],
                     });
-                    component.$Message.success('insert data directory success');
+                    this.$Message.success('insert data directory success');
                 } catch (e) {
                     console.log(e);
-                    component.$Message.error(e.response.data);
+                    this.$Message.error(e.response.data);
                 }
             },
 
