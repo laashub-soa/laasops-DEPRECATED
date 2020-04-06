@@ -14,7 +14,7 @@
     </div>
     <div style="height: 96vh;border: 1px solid #d6d6d6;">
       <span style="height: 100%;width: 40px;float: left;border: 1px solid #dcdee2">
-          <i-menu theme="dark" width="auto" :active-name="menu_active_name" @on-select="handleMenuSelect">
+          <i-menu theme="dark" width="auto" :active-name="menu_active_name" @on-select="function(name){menu_active_name = name}">
               <!--writing-mode: vertical-lr;-->
               <menu-item name="data" width="auto" style="user-select:none;">
                   Data
@@ -27,7 +27,7 @@
       <span style="width: 94vw;height:97vh;">
             <Split v-model="split" >
                 <div slot="left" style="margin-left: 40px">
-                    <DesignerDataDirectory v-if="menu_active_name=='data'"></DesignerDataDirectory>
+                    <DesignerDataDirectory v-show="menu_active_name=='data'"></DesignerDataDirectory>
                     <!--v-show="menu_active_name=='logic'"-->
                 </div>
                 <div slot="right">
@@ -137,7 +137,6 @@
                 //
                 menu_active_name: "data",
                 menu_init_record: {},
-                last_select_menu_ts: 0,
                 //
                 split: 0.2,
                 //
@@ -148,16 +147,6 @@
         methods: {
             handleTabRemove(name) {
                 this._data.tab_pane[name]["visible"] = false;
-            },
-            handleMenuSelect(name) {
-                if (name == this._data.menu_active_name || !this._data.menu_init_record[name]) {
-                    if (new Date().valueOf() - this._data.last_select_menu_ts < 600) {
-                        return;
-                    }
-                    trigger_directory_init(name);
-                }
-                this._data.menu_active_name = name;
-                this._data.last_select_menu_ts = new Date().valueOf();
             },
         },
     }
