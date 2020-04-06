@@ -14,7 +14,7 @@
     </div>
     <div style="height: 96vh;border: 1px solid #d6d6d6;">
       <span style="height: 100%;width: 40px;float: left;border: 1px solid #dcdee2">
-          <i-menu theme="dark" width="auto" :active-name="menu_active_name"
+          <i-menu theme="light" width="auto" :active-name="menu_active_name"
                   @on-select="function(name){menu_active_name = name}">
               <!--writing-mode: vertical-lr;-->
               <menu-item name="data" width="auto" style="user-select:none;">
