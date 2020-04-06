@@ -6,6 +6,7 @@
       @change-name="onChangeName"
       @delete-node="onDel"
       @add-node="onAddNode"
+      @drop="onDrop"
       :model="tree"
       default-tree-node-name="new node"
       default-leaf-node-name="new leaf"
@@ -127,34 +128,47 @@
                     this.$Message.error(e.response.data);
                 }
             },
-
+            async onDrop(params) {
+                console.log(params);
+                // save
+                try {
+                    const insert_result = await designer_data_directory.update_designer_data_directory({
+                        "id": params["node"]["id"],
+                        "pid": params["target"]["id"],
+                    });
+                    this.$Message.success('update data directory name success');
+                } catch (e) {
+                    console.log(e);
+                    this.$Message.error(e.response.data);
+                }
+            },
             onClick(params) {
                 console.log(params)
             },
 
-            getNewTree() {
-                var vm = this
-
-                function _dfs(oldNode) {
-                    var newNode = {}
-
-                    for (var k in oldNode) {
-                        if (k !== 'children' && k !== 'parent') {
-                            newNode[k] = oldNode[k]
-                        }
-                    }
-
-                    if (oldNode.children && oldNode.children.length > 0) {
-                        newNode.children = []
-                        for (var i = 0, len = oldNode.children.length; i < len; i++) {
-                            newNode.children.push(_dfs(oldNode.children[i]))
-                        }
-                    }
-                    return newNode
-                }
-
-                vm.newTree = _dfs(vm.data)
-            },
+            // getNewTree() {
+            //     var vm = this
+            //
+            //     function _dfs(oldNode) {
+            //         var newNode = {}
+            //
+            //         for (var k in oldNode) {
+            //             if (k !== 'children' && k !== 'parent') {
+            //                 newNode[k] = oldNode[k]
+            //             }
+            //         }
+            //
+            //         if (oldNode.children && oldNode.children.length > 0) {
+            //             newNode.children = []
+            //             for (var i = 0, len = oldNode.children.length; i < len; i++) {
+            //                 newNode.children.push(_dfs(oldNode.children[i]))
+            //             }
+            //         }
+            //         return newNode
+            //     }
+            //
+            //     vm.newTree = _dfs(vm.data)
+            // },
             async init_tree() {
                 this._data.tree = new Tree(await designer_data_directory.query_designer_data_directory());
             },
