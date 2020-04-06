@@ -60,12 +60,26 @@ def update():
     if "" == update_set_sql_str:
         raise MyServiceException("no content for update set")
 
-    return json.dumps(mymysql.execute("update designer_data_directory "+update_set_sql_str+" where id = %(id)s", params))
+    return json.dumps(
+        mymysql.execute("update designer_data_directory " + update_set_sql_str + " where id = %(id)s", params))
 
 
+@app.route('/delete', methods=['POST'])
 def delete():
-    pass
+    request_data = json.loads(request.get_data())
+    params = {}
+
+    if not request_data.__contains__("id"):
+        raise MyServiceException("missing param: id")
+    params["id"] = request_data["id"]
+
+    return json.dumps(mymysql.execute("""
+        delete
+        from designer_data_directory
+        where id = %(id)s
+    """, params))
 
 
+@app.route('/fork', methods=['POST'])
 def fork():
     pass

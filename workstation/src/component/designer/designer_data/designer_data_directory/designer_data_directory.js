@@ -50,10 +50,16 @@ async function update_designer_data_directory(data_directory) {
   if (!net_request_result || !net_request_result.status || net_request_result.status != 200 || !net_request_result.data) return;
   return net_request_result.data;
 }
+async function delete_designer_data_directory(data_directory) {
+  let net_request_result = await axios.post("/distribution/data/directory/delete", data_directory);
+  if (!net_request_result || !net_request_result.status || net_request_result.status != 200 || !net_request_result.data) return;
+  return net_request_result.data;
+}
 
 export default {
   query_designer_data_directory,
   insert_designer_data_directory,
   update_designer_data_directory,
+  delete_designer_data_directory,
 
 }

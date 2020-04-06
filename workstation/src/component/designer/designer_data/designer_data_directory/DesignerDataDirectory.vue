@@ -32,9 +32,19 @@
             }
         },
         methods: {
-            onDel(node) {
+            async onDel(node) {
                 console.log(node)
-                node.remove()
+                // save
+                try {
+                    const insert_result = await designer_data_directory.delete_designer_data_directory({
+                        "id": node["id"],
+                    });
+                    this.$Message.success('delete data directory success');
+                } catch (e) {
+                    console.log(e);
+                    this.$Message.error(e.response.data);
+                }
+                node.remove();
             },
 
             async onChangeName(params) {
