@@ -1,7 +1,7 @@
 <template>
   <div>
     <Button @click="init_tree">Refresh</Button>
-    <Button @click="onAddNode(null)">Add Node</Button>
+    <Button @click="onAddNode(null)">Add</Button>
     <vue-tree-list
       @click="onClick"
       @change-name="onChangeName"
@@ -9,8 +9,8 @@
       @add-node="onAddNode"
       @drop="onDrop"
       :model="tree"
-      default-tree-node-name="new node"
-      default-leaf-node-name="new leaf"
+      default-tree-node-name="new"
+      default-leaf-node-name="new"
       v-bind:default-expanded="true"
     >
     </vue-tree-list>

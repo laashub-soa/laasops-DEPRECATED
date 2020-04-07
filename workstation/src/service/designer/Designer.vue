@@ -15,7 +15,7 @@
             </BreadcrumbItem>
         </Breadcrumb>
       </span>
-      <span style="color: green;margin-left: 30px;font-size: 22px;">
+      <span style="margin-left: 30px;font-size: 22px;">
                 id: {{breadcrumb.cur_selected_id}}
       </span>
     </div>
