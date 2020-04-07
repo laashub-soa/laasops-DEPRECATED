@@ -346,7 +346,7 @@
                     'description': this._data.directory.description,
                 }
                 try {
-                    this._data.data = await directory.update_("data", data_directory);
+                    await directory.update_("data", data_directory);
                     this.$Message.success('update data directory description success');
                 } catch (e) {
                     console.log(e);
