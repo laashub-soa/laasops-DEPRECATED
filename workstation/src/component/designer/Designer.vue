@@ -1,15 +1,15 @@
 <template>
   <div style="height: 100vh">
-    <div >
+    <div>
       <Menu style="font-size: 10px" mode="horizontal" theme="light" :active-name="menu_active_name"
-              @on-select="function(name){menu_active_name = name}">
+            @on-select="function(name){menu_active_name = name}">
         <!--writing-mode: vertical-lr;-->
         <MenuItem name="data" width="40px" style="user-select:none;">
           Data
         </MenuItem>
         <MenuItem name="logic" width="40px" style="user-select:none;">
           Logic
-        </MenuItem >
+        </MenuItem>
       </Menu>
       <span>
         <Breadcrumb>
@@ -24,7 +24,7 @@
     </div>
     <div style="height: 93vh;border: 1px solid #d6d6d6;">
         <span style="height:93vh;">
-            <Split v-model="split" >
+            <Split v-model="split">
                 <div slot="left">
                     <DesignerDataDirectory @click-directory="OnClickDirectory"
                                            v-show="menu_active_name=='data'"></DesignerDataDirectory>
@@ -33,8 +33,8 @@
                 <div slot="right">
                     <Tabs v-model="tab_pane_cur" type="card" closable @on-tab-remove="handleTabRemove" :animated="false"
                           style="user-select:none;">
-                        <TabPane  :label="item.label" v-if="tab_pane[index].visible" v-for="(item,index) in tab_pane"
-                                  :icon="item.icon">
+                        <TabPane :label="item.label" v-if="tab_pane[index].visible" v-for="(item,index) in tab_pane"
+                                 :icon="item.icon">
 <!--                            v-show="item.type=='data'"-->
                           <!--                          v-show="item.type=='logic'"-->
 
@@ -77,10 +77,10 @@
                 this._data.tab_pane[name]["visible"] = false;
             },
             OnClickDirectory(directory) {
-                console.log(directory);
                 const _id = directory["id"];
+                const name = directory["name"];
                 // set breadcrumb
-                const breadcrumb_list = [directory["name"]];
+                const breadcrumb_list = [name];
                 this._data.breadcrumb.cur_selected_id = _id;
                 let parent = directory["parent"];
                 while (parent) {
@@ -91,12 +91,14 @@
                 this._data.breadcrumb.list = breadcrumb_list.reverse();
 
                 // update the right panel
+                // TODO if the already have the same name tab, need to update every tab' name
                 const tab_pane_id = _id;
                 for (const index in this._data.tab_pane) {
                     const item = this._data.tab_pane[index];
-                    if (item['name'] == _id) return;
-                    this._data.tab_pane.splice(index, 1);
-                    break;
+                    if (item['name'] == tab_pane_id) {
+                        this._data.tab_pane_cur = parseInt(index);
+                        return;
+                    }
                 }
                 this._data.tab_pane.push({
                     'type': 'data',
@@ -135,6 +137,7 @@
     font-size: 22px;
     float: left;
   }
+
   .ivu-menu-horizontal {
     height: 30px;
     line-height: 30px;

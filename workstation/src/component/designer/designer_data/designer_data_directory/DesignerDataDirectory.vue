@@ -42,7 +42,6 @@
         },
         methods: {
             async onDel(node) {
-                console.log(node);
                 // delete need to confirm
                 const component = this;
                 if (!await new Promise(function (resolve, reject) {
@@ -76,7 +75,6 @@
 
             async onChangeName(params) {
                 // TODO fix_bug: not every event need to response
-                console.log(params)
                 const input_name_result = params["newName"];
                 if ("" == input_name_result) {
                     this.$Message.error("name can't be blank character");
@@ -98,7 +96,6 @@
             },
 
             async onAddNode(params) {
-                console.log(params);
                 // make sure input data directory name
                 const component = this;
                 component._data.name = "";
@@ -160,7 +157,6 @@
                 }
             },
             async onDrop(params) {
-                console.log(params);
                 // save
                 try {
                     const insert_result = await designer_data_directory.update_designer_data_directory({
@@ -175,7 +171,6 @@
                 }
             },
             onClick(params) {
-                console.log(params);
                 this.$emit('click-directory', params);
             },
             async init_tree() {
