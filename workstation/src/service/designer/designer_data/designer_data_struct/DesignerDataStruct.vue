@@ -9,7 +9,7 @@
       {{directory.description_btn_name}}
     </i-button>
     <i-button type="primary"
-              @click="insert_">add one line
+              @click="init_insert_">add line
     </i-button>
     <span style="user-select: text">table_prefix_name: designer_data_data_</span>
     <i-table stripe border :columns="columns"
@@ -90,19 +90,6 @@
         component._data.is_in_opt = false;
         component._data.opt_name = "";
         component._data.opt_line = -1;
-    }
-
-    async function opt_data(component, cur_line_data) {
-        // operation type
-        const opt_name = component._data.opt_name;
-        let request_data = {};
-        if ("insert" == opt_name) {
-            insert_designer_data_struct(cur_line_data);
-        } else if ("update" == opt_name) {
-            update_designer_data_struct(cur_line_data);
-        } else if ("delete" == opt_name) {
-            delete_designer_data_struct(cur_line_data);
-        }
     }
 
     function calculate_table_column_width(component, column_number) {
@@ -204,7 +191,12 @@
                                 const cur_line_index = params.index;
                                 const cur_line_data = component._data.data[cur_line_index];
                                 cur_line_data['did'] = component._data.directory.id;
-                                opt_data(component, cur_line_data);
+
+                                if ("insert" == component._data.opt_name) {
+                                    component.insert_(component, cur_line_data);
+                                } else if ("update" == component._data.opt_name) {
+                                    component.update_(component, cur_line_data);
+                                }
                             }
                         }
                     }, 'save'));
@@ -262,7 +254,8 @@
                                         component._data.opt_line = cur_line_index;
                                         const cur_line_data = component._data.data[cur_line_index];
                                         cur_line_data['did'] = component._data.directory.id;
-                                        opt_data(component, cur_line_data);
+
+                                        component.delete_(component, cur_line_data);
                                     },
                                     closable: true,
                                     onCancel: function () {
@@ -349,11 +342,34 @@
                     this.$Message.error(e.response.data);
                 }
             },
-            async insert_() {
+            async init_insert_() {
+                // can not continuous multiple times add/update
+                if (this._data.is_in_opt) {
+                    this.$Message.error("can not continuous multiple times add/update");
+                    return;
+                }
+                this._data.is_in_opt = true;
+                this._data.opt_name = "insert";
+
+                // construct column
+                const temp_data_one = {};
+                for (const item of this._data.columns) {
+                    const key = item["key"];
+                    if (key && key != "") {
+                        temp_data_one[key] = "";
+                    }
+                }
+                this._data.opt_line = this._data.data.length;
+                this._data.data.push(temp_data_one);
             },
-            async update_() {
+            async insert_(component, data_struct) {
+
             },
-            async delete_() {
+            async update_(component, data_struct) {
+
+            },
+            async delete_(component, data_struct) {
+
             },
         },
         async created() {
