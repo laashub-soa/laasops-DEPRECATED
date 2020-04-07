@@ -45,17 +45,23 @@ def update():
 
     if request_data.__contains__("name"):
         params["name"] = request_data["name"]
-        update_set_sql_str = "set name=%(name)s"
+        update_set_sql_str = "name=%(name)s, "
 
     if request_data.__contains__("pid"):
         params["pid"] = request_data["pid"]
-        update_set_sql_str = "set pid=%(pid)s"
+        update_set_sql_str = "pid=%(pid)s, "
+
+    if request_data.__contains__("description"):
+        params["description"] = request_data["description"]
+        update_set_sql_str = "description=%(description)s, "
 
     if "" == update_set_sql_str:
         raise MyServiceException("no content for update set")
 
+    update_set_sql_str = update_set_sql_str[:len(update_set_sql_str) - 2]
+
     return json.dumps(
-        mymysql.execute("update designer_data_directory " + update_set_sql_str + " where id = %(id)s", params))
+        mymysql.execute("update designer_data_directory set " + update_set_sql_str + " where id = %(id)s", params))
 
 
 @app.route('/delete', methods=['POST'])
