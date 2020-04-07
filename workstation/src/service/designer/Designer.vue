@@ -30,20 +30,12 @@
                     <Tabs v-model="tab_pane_cur" type="card" closable @on-tab-remove="handleTabRemove"
                           @on-click="onClickTab" :animated="false"
                           style="user-select:none;">
-                        <TabPane :label="item.label" v-if="tab_pane[index].visible" v-for="(item,index) in tab_pane"
+                        <TabPane :label="item.label"
+                                 v-for="(item,index) in tab_pane"
                                  :icon="item.icon">
-                          item.name: {{item.name}} <br/>
-                          tab_panel_cur_id: {{tab_panel_cur_id}} <br/>
-                          index: {{index}} <br/>
-                          tab_pane_cur: {{tab_pane_cur}} <br/>
-                          <DesignerDataStruct v-show="item.type=='data' && index==tab_pane_cur"
+                          <DesignerDataStruct v-if="item.type=='data'"
                                               :directory_id="item.directory_id"
                                               :directory_name="item.name" :split_value="split"></DesignerDataStruct>
-                          <!--
-                          v-show="item.type=='data'"
-                          v-show="item.type=='logic'"
-                          -->
-
                         </TabPane>
                     </Tabs>
                 </div>
@@ -80,6 +72,9 @@
                 // split
                 split: 0.2,
                 // tab_panel
+                tab_panel: {
+                    visible: [],
+                },
                 tab_pane: [],
                 tab_pane_cur: -1,
                 tab_panel_cur_id: "",
@@ -97,19 +92,6 @@
                 this._data.tab_panel_cur_id = this._data.tab_pane[name]["name"];
             },
             handleTabRemove(name) {
-                // this._data.tab_pane_cur = name;
-                const tab_panel_list = this._data.tab_pane;
-                this._data.tab_pane = [];
-                this._data.tab_pane = tab_panel_list;
-
-                // this._data.tab_pane = this._data.tab_pane;
-                // tab
-                // this._data.tab_panel_cur_id = "";
-                // if (this._data.tab_pane.length > name + 1) {
-                //     this._data.tab_panel_cur_id = this._data.tab_pane[name + 1]["name"];
-                // }
-                // breadcrumb
-                console.log(this._data.tab_pane);
             },
             OnClickDirectory(service_type, directory) {
                 const _id = directory["id"];
