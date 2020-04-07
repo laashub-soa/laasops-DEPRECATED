@@ -69,6 +69,8 @@
 </template>
 
 <script>
+    import designer_data_struct from "./designer_data_struct";
+
 
     const update_description_btn_str = "update description";
     const save_description_btn_str = "save description";
@@ -335,9 +337,17 @@
             }
         },
         methods: {
-            update_directory_description() {},
+            update_directory_description() {
+            },
             async select_() {
-
+                await cancel_opt_data();
+                try {
+                    this._data.data = await designer_data_struct.select_({'did': this.directory_id});
+                    this.$Message.success('query data_struct success');
+                } catch (e) {
+                    console.log(e);
+                    this.$Message.error(e.response.data);
+                }
             },
             async insert_() {
             },
