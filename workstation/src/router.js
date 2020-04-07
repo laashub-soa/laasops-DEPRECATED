@@ -32,9 +32,9 @@ const routers = [
   {
     path: '/data_struct',
     meta: {
-      title: 'Datastruct'
+      title: 'DataStruct'
     },
-    component: (resolve) => require(['./service/designer/designer_data/designer_data_struct/DesignerDataStruct'], resolve)
+    component: (resolve) => require(['./service/designer/designer_data/designer_data_struct/DesignerDataStruct.vue'], resolve)
   },
 ];
 export default routers;
