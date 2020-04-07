@@ -39,8 +39,10 @@ def error(e):
 
 
 from distribution.service.data import directory as distribution_data_directory
+from distribution.service.logic import directory as distribution_logic_directory
 
 app.register_blueprint(distribution_data_directory.app)
+app.register_blueprint(distribution_logic_directory.app)
 
 # init the log
 if not os.path.exists("logs"):
