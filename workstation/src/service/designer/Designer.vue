@@ -32,12 +32,7 @@
                         <TabPane :label="item.label" v-if="tab_pane[index].visible" v-for="(item,index) in tab_pane"
                                  :icon="item.icon">
                           <DesignerDataStruct v-show="item.type=='data'" :directory_id="item.directory_id"
-                                              :directory_name="item.name" :split_value="split"
-
-                          >
-
-                          </DesignerDataStruct>
-
+                                              :directory_name="item.name" :split_value="split"></DesignerDataStruct>
                           <!--
                           v-show="item.type=='data'"
                           v-show="item.type=='logic'"
