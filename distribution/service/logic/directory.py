@@ -1,7 +1,8 @@
 import json
 
-from flask import Blueprint, request
+from flask import Blueprint
 
+from ...component import form
 from ...component import mymysql
 from ...exception import MyServiceException
 
@@ -21,14 +22,8 @@ def select():
 
 @app.route('/insert', methods=['POST'])
 def insert():
-    request_data = json.loads(request.get_data())
-
-    if not request_data.__contains__("pid"):
-        raise MyServiceException("missing param: pid")
+    request_data = form.check(["pid", "name"])
     pid = request_data["pid"]
-
-    if not request_data.__contains__("name"):
-        raise MyServiceException("missing param: name")
     name = request_data["name"]
 
     return json.dumps(mymysql.execute("""
@@ -41,12 +36,10 @@ def insert():
 
 @app.route('/update', methods=['POST'])
 def update():
-    request_data = json.loads(request.get_data())
+    request_data = form.check(["id"])
     params = {}
     update_set_sql_str = ""
 
-    if not request_data.__contains__("id"):
-        raise MyServiceException("missing param: id")
     params["id"] = request_data["id"]
 
     if request_data.__contains__("name"):
@@ -66,9 +59,7 @@ def update():
 
 @app.route('/delete', methods=['POST'])
 def delete():
-    request_data = json.loads(request.get_data())
-    if not request_data.__contains__("id"):
-        raise MyServiceException("missing param: id")
+    request_data = form.check(["id"])
 
     def get_children(_id):
         return mymysql.execute("""
