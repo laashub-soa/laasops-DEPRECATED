@@ -70,7 +70,7 @@
 
 <script>
     import designer_data_struct from "./designer_data_struct";
-
+    import directory from "../../../../component/directory/directory";
 
     const update_description_btn_str = "update description";
     const save_description_btn_str = "save description";
@@ -333,7 +333,26 @@
             }
         },
         methods: {
-            update_directory_description() {
+            async update_directory_description() {
+                if (this._data.directory.description_disabled) {
+                    this._data.directory.description_disabled = false;
+                    this._data.directory.description_btn_name = save_description_btn_str;
+                    return;
+                }
+                this._data.directory.description_disabled = true;
+                this._data.directory.description_btn_name = update_description_btn_str;
+                const data_directory = {
+                    'id': this.directory_id,
+                    'description': this._data.directory.description,
+                }
+                try {
+                    this._data.data = await directory.update_("data", data_directory);
+                    this.$Message.success('update data directory description success');
+                } catch (e) {
+                    console.log(e);
+                    this.$Message.error(e.response.data);
+                }
+
             },
             async init_table() {
                 await cancel_opt_data(this);
