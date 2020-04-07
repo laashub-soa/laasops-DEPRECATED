@@ -74,7 +74,7 @@
                     this.$Message.error(e.response.data);
                 }
                 node.remove();
-                this.$emit('del-directory', node);
+                this.$emit('del-directory', this.service_type, node);
             },
 
             async onChangeName(params) {
@@ -91,7 +91,7 @@
                         "name": input_name_result,
                     });
                     this.$Message.success('update directory name success');
-                    this.$emit('change-directory', params);
+                    this.$emit('change-directory', this.service_type, params);
                 } catch (e) {
                     console.log(e);
                     this.$Message.error(e.response.data);
@@ -154,7 +154,7 @@
                         this._data.tree.addChildren(new TreeNode(params));
                     }
                     this.$Message.success('insert directory success');
-                    this.$emit('add-directory', params);
+                    this.$emit('add-directory', this.service_type, params);
                 } catch (e) {
                     console.log(e);
                     this.$Message.error(e.response.data);
@@ -168,14 +168,14 @@
                         "pid": params["target"]["id"],
                     });
                     this.$Message.success('update directory name success');
-                    this.$emit('drop-directory', params);
+                    this.$emit('drop-directory', this.service_type, params);
                 } catch (e) {
                     console.log(e);
                     this.$Message.error(e.response.data);
                 }
             },
             onClick(params) {
-                this.$emit('click-directory', params);
+                this.$emit('click-directory', this.service_type, params);
             },
             async init_tree() {
                 try {

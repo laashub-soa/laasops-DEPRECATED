@@ -73,7 +73,7 @@
             handleTabRemove(name) {
                 this._data.tab_pane[name]["visible"] = false;
             },
-            OnClickDirectory(directory) {
+            OnClickDirectory(service_type, directory) {
                 const _id = directory["id"];
                 const name = directory["name"];
                 // set breadcrumb
