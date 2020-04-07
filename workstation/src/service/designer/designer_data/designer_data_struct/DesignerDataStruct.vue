@@ -339,8 +339,8 @@
         methods: {
             update_directory_description() {
             },
-            async select_() {
-                await cancel_opt_data();
+            async init_table() {
+                await cancel_opt_data(this);
                 try {
                     this._data.data = await designer_data_struct.select_({'did': this.directory_id});
                     this.$Message.success('query data_struct success');
@@ -357,7 +357,7 @@
             },
         },
         async created() {
-            await this.select_();
+            await this.init_table();
         }
     }
 </script>

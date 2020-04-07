@@ -1,7 +1,7 @@
 import axios from "axios";
 
 async function select_(data_struct) {
-  let net_request_result = await axios.post("/distribution/data/struct/insert", data_struct);
+  let net_request_result = await axios.post("/distribution/data/struct/select", data_struct);
   if (!net_request_result || !net_request_result.status || net_request_result.status != 200 || !net_request_result.data) return;
   return net_request_result.data;
 }
