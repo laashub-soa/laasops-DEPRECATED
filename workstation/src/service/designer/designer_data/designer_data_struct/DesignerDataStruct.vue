@@ -66,7 +66,8 @@
 
 <script>
     export default {
-        name: "DesignerDataStruct"
+        name: "DesignerDataStruct",
+
     }
 </script>
 

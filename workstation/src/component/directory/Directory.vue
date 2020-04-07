@@ -152,6 +152,8 @@
                             children: []
                         };
                         this._data.tree.addChildren(new TreeNode(params));
+                    } else {
+                        params["id"] = insert_result;
                     }
                     this.$Message.success('insert directory success');
                     this.$emit('add-directory', this.service_type, params);
