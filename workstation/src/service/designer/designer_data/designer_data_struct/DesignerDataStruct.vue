@@ -335,15 +335,19 @@
             }
         },
         methods: {
-            update_directory_description() {
+            update_directory_description() {},
+            async select_() {
 
             },
-            insert_() {
-
+            async insert_() {
+            },
+            async update_() {
+            },
+            async delete_() {
             },
         },
-        created() {
-
+        async created() {
+            await this.select_();
         }
     }
 </script>
