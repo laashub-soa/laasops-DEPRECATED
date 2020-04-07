@@ -22,26 +22,24 @@
                 id: {{breadcrumb.cur_selected_id}}
       </span>
     </div>
-    <div style="height: 92vh;border: 1px solid #d6d6d6;">
-        <span style="height:97vh;">
-            <Split v-model="split" style="width: 100vw">
+    <div style="height: 93vh;border: 1px solid #d6d6d6;">
+        <span style="height:93vh;">
+            <Split v-model="split" >
                 <div slot="left">
                     <DesignerDataDirectory @click-directory="OnClickDirectory"
                                            v-show="menu_active_name=='data'"></DesignerDataDirectory>
                   <!--v-show="menu_active_name=='logic'"-->
                 </div>
                 <div slot="right">
-                    <tabs v-model="tab_pane_cur" type="card" closable @on-tab-remove="handleTabRemove" :animated="false"
+                    <Tabs v-model="tab_pane_cur" type="card" closable @on-tab-remove="handleTabRemove" :animated="false"
                           style="user-select:none;">
-                        <!--style="margin-left: 10px"-->
-                        <tab-pane :label="item.label" v-if="tab_pane[index].visible" v-for="(item,index) in tab_pane"
-                                  :icon="item.icon"
-                                  style="margin-left: 2px;">
+                        <TabPane  :label="item.label" v-if="tab_pane[index].visible" v-for="(item,index) in tab_pane"
+                                  :icon="item.icon">
 <!--                            v-show="item.type=='data'"-->
                           <!--                          v-show="item.type=='logic'"-->
 
-                        </tab-pane>
-                    </tabs>
+                        </TabPane>
+                    </Tabs>
                 </div>
             </Split>
         </span>
