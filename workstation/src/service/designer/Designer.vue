@@ -105,12 +105,17 @@
                     }
                 }
                 if (is_not_exist) {
+                    let icon = 'md-albums';
+                    if (cur_service_type == 'logic') {
+                        icon = 'md-cog';
+                    }
+
                     this._data.tab_pane.push({
                         'type': cur_service_type,
                         'name': tab_panel_id,
                         'label': label,
                         'visible': true,
-                        'icon': 'md-albums',
+                        'icon': icon,
                     });
                     this._data.tab_pane_cur = this._data.tab_pane.length - 1;
                 }
