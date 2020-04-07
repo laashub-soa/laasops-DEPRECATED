@@ -16,7 +16,7 @@
         </Breadcrumb>
       </span>
       <span style="margin-left: 30px;font-size: 22px;">
-                id: {{breadcrumb.cur_selected_id}}
+                id: {{directory.cur_id}}
       </span>
     </div>
     <div style="height: 93vh;border: 1px solid #d6d6d6;">
@@ -32,7 +32,12 @@
                           style="user-select:none;">
                         <TabPane :label="item.label" v-if="tab_pane[index].visible" v-for="(item,index) in tab_pane"
                                  :icon="item.icon">
-                          <DesignerDataStruct v-show="item.type=='data'" :directory_id="item.directory_id"
+                          item.name: {{item.name}} <br/>
+                          tab_panel_cur_id: {{tab_panel_cur_id}} <br/>
+                          index: {{index}} <br/>
+                          tab_pane_cur: {{tab_pane_cur}} <br/>
+                          <DesignerDataStruct v-show="item.type=='data' && index==tab_pane_cur"
+                                              :directory_id="item.directory_id"
                                               :directory_name="item.name" :split_value="split"></DesignerDataStruct>
                           <!--
                           v-show="item.type=='data'"
@@ -62,18 +67,21 @@
             return {
                 // service type list
                 service_type_list: ['data', 'logic'],
+                // menu
+                menu_active_name: "data",
                 // breadcrumb
                 breadcrumb: {
                     list: [],
-                    cur_selected_id: '',
                 },
-                //
-                menu_active_name: "data",
+                // directory
+                directory: {
+                    cur_id: '',
+                },
                 // split
                 split: 0.2,
-                // tab_pane
+                // tab_panel
                 tab_pane: [],
-                tab_pane_cur: "",
+                tab_pane_cur: -1,
                 tab_panel_cur_id: "",
             }
         },
@@ -82,27 +90,33 @@
                 const tab_data = this._data.tab_pane[name];
                 // breadcrumb
                 this._data.breadcrumb.list = tab_data['breadcrumb_list'];
-                this._data.breadcrumb.cur_selected_id = tab_data['directory_id'];
+                this._data.directory.cur_id = tab_data['directory_id'];
                 // menu
                 this._data.menu_active_name = tab_data['type'];
+                // tab
+                this._data.tab_panel_cur_id = this._data.tab_pane[name]["name"];
             },
             handleTabRemove(name) {
-                // // // this._data.tab_pane[name]["visible"] = false;
-                // this._data.tab_pane.splice(name, 1);
-                console.log(this._data.tab_pane);
-                //
-                // // make the first tab to display
-                // if (this._data.tab_pane.length>0){
-                //     this._data.tab_pane[0]["visible"] = false;
-                // }
+                // this._data.tab_pane_cur = name;
+                const tab_panel_list = this._data.tab_pane;
+                this._data.tab_pane = [];
+                this._data.tab_pane = tab_panel_list;
 
+                // this._data.tab_pane = this._data.tab_pane;
+                // tab
+                // this._data.tab_panel_cur_id = "";
+                // if (this._data.tab_pane.length > name + 1) {
+                //     this._data.tab_panel_cur_id = this._data.tab_pane[name + 1]["name"];
+                // }
+                // breadcrumb
+                console.log(this._data.tab_pane);
             },
             OnClickDirectory(service_type, directory) {
                 const _id = directory["id"];
                 const name = directory["name"];
                 // set breadcrumb
                 const breadcrumb_list = [name];
-                this._data.breadcrumb.cur_selected_id = _id;
+                this._data.directory.cur_id = _id;
                 let parent = directory["parent"];
                 while (parent) {
                     breadcrumb_list.push(parent["name"]);
@@ -117,6 +131,7 @@
                 let label = name;
                 let is_not_exist = true;
                 const tab_panel_id = cur_service_type + _id;
+                this._data.tab_panel_cur_id = tab_panel_id;
                 for (const index in this._data.tab_pane) {
                     const item = this._data.tab_pane[index];
                     if (item['name'] == tab_panel_id) {
