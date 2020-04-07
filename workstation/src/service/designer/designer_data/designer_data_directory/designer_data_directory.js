@@ -9,17 +9,15 @@ async function query_designer_data_directory() {
   const description_str = "description";
   const children_str = "children";
 
-  function setup_tree(pid, parent_level_str) {
+  function setup_tree(pid) {
     const cur_tree_level = [];
     let i = original_tree_list.length;
     while (i--) {
       const originalTreeListElement = original_tree_list[i];
       if (originalTreeListElement["pid"] == pid) {
         original_tree_list.splice(i, 1);
-        const cur_level_str = parent_level_str + "," + originalTreeListElement["name"];
-        const next_tree_level = setup_tree(originalTreeListElement["id"], cur_level_str);
+        const next_tree_level = setup_tree(originalTreeListElement["id"]);
         const cur_tree_data = originalTreeListElement;
-        cur_tree_data["cur_level_str"] = cur_level_str;
         cur_tree_data[name_str] = originalTreeListElement["name"];
         cur_tree_data[description_str] = originalTreeListElement[description_str];
 
@@ -36,7 +34,7 @@ async function query_designer_data_directory() {
     return cur_tree_level.reverse();
   }
 
-  return setup_tree(-1, '');
+  return setup_tree(-1);
 }
 
 async function insert_designer_data_directory(data_directory) {
