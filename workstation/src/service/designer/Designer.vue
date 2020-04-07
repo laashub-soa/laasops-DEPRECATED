@@ -31,8 +31,17 @@
                           style="user-select:none;">
                         <TabPane :label="item.label" v-if="tab_pane[index].visible" v-for="(item,index) in tab_pane"
                                  :icon="item.icon">
-<!--                            v-show="item.type=='data'"-->
-                          <!--                          v-show="item.type=='logic'"-->
+                          <DesignerDataStruct v-show="item.type=='data'" :directory_id="item.directory_id"
+                                              :directory_name="item.name" :split_value="split"
+
+                          >
+
+                          </DesignerDataStruct>
+
+                          <!--
+                          v-show="item.type=='data'"
+                          v-show="item.type=='logic'"
+                          -->
 
                         </TabPane>
                     </Tabs>
@@ -45,11 +54,13 @@
 
 <script>
     import Directory from '../../component/directory/Directory.vue'
+    import DesignerDataStruct from "./designer_data/designer_data_struct/DesignerDataStruct";
 
     export default {
         name: "Designer",
         components: {
-            Directory
+            Directory,
+            DesignerDataStruct
         },
         data() {
             return {
@@ -67,6 +78,7 @@
                 // tab_pane
                 tab_pane: [],
                 tab_pane_cur: "",
+                tab_panel_cur_id: "",
             }
         },
         methods: {
@@ -113,6 +125,7 @@
                     this._data.tab_pane.push({
                         'type': cur_service_type,
                         'name': tab_panel_id,
+                        'directory_id': _id,
                         'label': label,
                         'visible': true,
                         'icon': icon,
