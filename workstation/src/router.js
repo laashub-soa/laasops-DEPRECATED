@@ -20,5 +20,13 @@ const routers = [
     },
     component: (resolve) => require(['./service/dashboard/Dashboard'], resolve)
   },
+  // component
+  {
+    path: '/directory',
+    meta: {
+      title: 'Directory'
+    },
+    component: (resolve) => require(['./component/directory/Directory.vue'], resolve)
+  },
 ];
 export default routers;

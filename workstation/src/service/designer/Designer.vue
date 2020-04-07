@@ -3,12 +3,9 @@
     <div>
       <Menu style="font-size: 10px" mode="horizontal" theme="light" :active-name="menu_active_name"
             @on-select="function(name){menu_active_name = name}">
-        <!--writing-mode: vertical-lr;-->
-        <MenuItem name="data" width="40px" style="user-select:none;">
-          Data
-        </MenuItem>
-        <MenuItem name="logic" width="40px" style="user-select:none;">
-          Logic
+        <MenuItem :name="item" width="40px" style="user-select:none;text-transform:uppercase;"
+                  v-for="item in service_type_list">
+          {{item}}
         </MenuItem>
       </Menu>
       <span>
@@ -26,9 +23,8 @@
         <span style="height:93vh;">
             <Split v-model="split">
                 <div slot="left">
-                    <DesignerDataDirectory @click-directory="OnClickDirectory"
-                                           v-show="menu_active_name=='data'"></DesignerDataDirectory>
-                  <!--v-show="menu_active_name=='logic'"-->
+                  <Directory @click-directory="OnClickDirectory" v-show="menu_active_name==item" :service_type="item"
+                             v-for="item in service_type_list"></Directory>
                 </div>
                 <div slot="right">
                     <Tabs v-model="tab_pane_cur" type="card" closable @on-tab-remove="handleTabRemove" :animated="false"
@@ -48,26 +44,27 @@
 </template>
 
 <script>
-    import DesignerDataDirectory from './designer_data/designer_data_directory/DesignerDataDirectory.vue'
+    import Directory from '../../component/directory/Directory.vue'
 
     export default {
         name: "Designer",
         components: {
-            DesignerDataDirectory
+            Directory
         },
         data() {
             return {
-                //
+                // service type list
+                service_type_list: ['data', 'logic'],
+                // breadcrumb
                 breadcrumb: {
                     list: [],
                     cur_selected_id: '',
                 },
                 //
                 menu_active_name: "data",
-                menu_init_record: {},
-                //
+                // split
                 split: 0.2,
-                //
+                // tab_pane
                 tab_pane: [],
                 tab_pane_cur: "",
             }
@@ -93,7 +90,7 @@
                 // update the right panel
                 // TODO if the already have the same name tab, need to update every tab' name
                 const tab_panel_id = _id;
-                let exist_panel_id  = null;
+                let exist_panel_id = null;
                 for (const index in this._data.tab_pane) {
                     const item = this._data.tab_pane[index];
                     if (item['name'] == tab_panel_id) {
