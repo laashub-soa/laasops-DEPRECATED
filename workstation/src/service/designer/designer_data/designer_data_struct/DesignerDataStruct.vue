@@ -75,7 +75,7 @@
     const update_description_btn_str = "update description";
     const save_description_btn_str = "save description";
 
-    async function cancel_opt_data(component) {
+    function cancel_opt_data(component) {
         const opt_name = component._data.opt_name;
         if ("insert" == opt_name) {
             component._data.data.pop();
@@ -91,6 +91,7 @@
         component._data.opt_name = "";
         component._data.opt_line = -1;
     }
+
 
     function calculate_table_column_width(component, column_number) {
         const window_width = document.documentElement.clientWidth;
@@ -190,8 +191,10 @@
                             click: () => {
                                 const cur_line_index = params.index;
                                 const cur_line_data = component._data.data[cur_line_index];
-                                cur_line_data['did'] = component._data.directory.id;
+                                cur_line_data['did'] = component.directory_id;
 
+                                console.log("cur_line_data");
+                                console.log(cur_line_data);
                                 if ("insert" == component._data.opt_name) {
                                     component.insert_(component, cur_line_data);
                                 } else if ("update" == component._data.opt_name) {
@@ -224,7 +227,7 @@
                                 component._data.opt_line = cur_line_index;
                                 const cur_line_data = component._data.data[cur_line_index];
                                 component._data.data[cur_line_index] = cur_line_data;
-                                cur_line_data['did'] = component._data.directory.id;
+                                cur_line_data['did'] = component.directory_id;
                                 component._data.data_line_backup = JSON.parse(JSON.stringify(cur_line_data));
                             }
                         }
@@ -253,7 +256,7 @@
                                         component._data.opt_name = "delete";
                                         component._data.opt_line = cur_line_index;
                                         const cur_line_data = component._data.data[cur_line_index];
-                                        cur_line_data['did'] = component._data.directory.id;
+                                        cur_line_data['did'] = component.directory_id;
 
                                         component.delete_(component, cur_line_data);
                                     },
@@ -342,7 +345,7 @@
                     this.$Message.error(e.response.data);
                 }
             },
-            async init_insert_() {
+            init_insert_() {
                 // can not continuous multiple times add/update
                 if (this._data.is_in_opt) {
                     this.$Message.error("can not continuous multiple times add/update");
@@ -363,13 +366,34 @@
                 this._data.data.push(temp_data_one);
             },
             async insert_(component, data_struct) {
-
+                try {
+                    await designer_data_struct.insert_(data_struct);
+                    component.$Message.success('insert data struct success');
+                    await component.init_table();
+                } catch (e) {
+                    console.log(e.response.data);
+                    component.$Message.error(e.response.data);
+                }
             },
             async update_(component, data_struct) {
-
+                try {
+                    await designer_data_struct.update_(data_struct);
+                    component.$Message.success('update data struct success');
+                    await component.init_table();
+                } catch (e) {
+                    console.log(e.response.data);
+                    component.$Message.error(e.response.data);
+                }
             },
             async delete_(component, data_struct) {
-
+                try {
+                    await designer_data_struct.delete_(data_struct);
+                    component.$Message.success('delete data struct success');
+                    await component.init_table();
+                } catch (e) {
+                    console.log(e.response.data);
+                    component.$Message.error(e.response.data);
+                }
             },
         },
         async created() {
