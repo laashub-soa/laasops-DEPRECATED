@@ -27,7 +27,8 @@
                              v-for="item in service_type_list"></Directory>
                 </div>
                 <div slot="right">
-                    <Tabs v-model="tab_pane_cur" type="card" closable @on-tab-remove="handleTabRemove" :animated="false"
+                    <Tabs v-model="tab_pane_cur" type="card" closable @on-tab-remove="handleTabRemove"
+                          @on-click="onClickTab" :animated="false"
                           style="user-select:none;">
                         <TabPane :label="item.label" v-if="tab_pane[index].visible" v-for="(item,index) in tab_pane"
                                  :icon="item.icon">
@@ -77,8 +78,24 @@
             }
         },
         methods: {
+            onClickTab(name) {
+                const tab_data = this._data.tab_pane[name];
+                // breadcrumb
+                this._data.breadcrumb.list = tab_data['breadcrumb_list'];
+                this._data.breadcrumb.cur_selected_id = tab_data['directory_id'];
+                // menu
+                this._data.menu_active_name = tab_data['type'];
+            },
             handleTabRemove(name) {
-                this._data.tab_pane[name]["visible"] = false;
+                // // // this._data.tab_pane[name]["visible"] = false;
+                // this._data.tab_pane.splice(name, 1);
+                console.log(this._data.tab_pane);
+                //
+                // // make the first tab to display
+                // if (this._data.tab_pane.length>0){
+                //     this._data.tab_pane[0]["visible"] = false;
+                // }
+
             },
             OnClickDirectory(service_type, directory) {
                 const _id = directory["id"];
@@ -121,6 +138,7 @@
                         'type': cur_service_type,
                         'name': tab_panel_id,
                         'directory_id': _id,
+                        'breadcrumb_list': breadcrumb_list,
                         'label': label,
                         'visible': true,
                         'icon': icon,
