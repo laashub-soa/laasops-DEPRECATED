@@ -92,17 +92,18 @@
 
                 // update the right panel
                 // TODO if the already have the same name tab, need to update every tab' name
-                const tab_pane_id = _id;
+                const tab_panel_id = _id;
+                let exist_panel_id  = null;
                 for (const index in this._data.tab_pane) {
                     const item = this._data.tab_pane[index];
-                    if (item['name'] == tab_pane_id) {
+                    if (item['name'] == tab_panel_id) {
                         this._data.tab_pane_cur = parseInt(index);
                         return;
                     }
                 }
                 this._data.tab_pane.push({
                     'type': 'data',
-                    'name': tab_pane_id,
+                    'name': tab_panel_id,
                     'label': name,
                     'visible': true,
                     'icon': 'md-albums',
