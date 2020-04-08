@@ -35,7 +35,7 @@
                           :before-remove='beforeRemove'
                     >
 
-                        <TabPane v-if="item" :label="item.label"
+                        <TabPane v-if="item.visible" :label="item.label"
                                  v-for="(item,index) in tab_pane"
                                  :icon="item.icon"
                                  :key="item.name"
@@ -91,14 +91,31 @@
         },
         methods: {
             beforeRemove(index) {
+                console.log("remove: " + index);
                 const component = this;
                 return new Promise(function (resolve, reject) {
-                    component._data.tab_pane.splice(index, 1);
+                    let real_index = 0;
+                    let index_increment = index;
+                    component._data.tab_pane_cur = -1;
+                    for (const index in component._data.tab_pane) {
+                        const item = component._data.tab_pane[index];
+                        if (item['visible']) {
+                            if (0 == index_increment) {
+                                real_index = index;
+                            } else if (-1 == index_increment) {
+                                component._data.tab_pane_cur = parseInt(index);
+                                break;
+                            }
+                            index_increment--;
+                            continue;
+                        }
+                    }
+                    component._data.tab_pane[real_index].visible = false;
                     reject(index);
                 })
             },
             onClickTab(index) {
-                console.log(index);
+                console.log("click: " + index);
                 const tab_data = this._data.tab_pane[index];
                 // breadcrumb
                 this._data.breadcrumb.list = tab_data['breadcrumb_list'];
@@ -136,6 +153,7 @@
                     if (item['name'] == tab_panel_id) {
                         is_not_exist = false;
                         this._data.tab_pane_cur = parseInt(index);
+                        this._data.tab_pane[index].visible = true;
                         break;
                     }
                     if (label == item['label']) {
