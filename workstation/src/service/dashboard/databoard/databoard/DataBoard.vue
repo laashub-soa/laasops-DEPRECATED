@@ -1,13 +1,13 @@
 <template>
   <div style="height: 100vh">
     <div>
-      <Menu style="font-size: 10px" mode="horizontal" theme="light" :active-name="menu_active_name"
-            @on-select="function(name){menu_active_name = name}">
-        <MenuItem :name="item" width="40px" style="user-select:none;text-transform:uppercase;"
-                  v-for="item in service_type_list">
-          {{item}}
-        </MenuItem>
-      </Menu>
+<!--      <Menu style="font-size: 10px" mode="horizontal" theme="light" :active-name="menu_active_name"-->
+<!--            @on-select="function(name){menu_active_name = name}">-->
+<!--        <MenuItem :name="item" width="40px" style="user-select:none;text-transform:uppercase;"-->
+<!--                  v-for="item in service_type_list">-->
+<!--          {{item}}-->
+<!--        </MenuItem>-->
+<!--      </Menu>-->
       <span>
         <Breadcrumb>
             <BreadcrumbItem v-for="item in breadcrumb.list">
@@ -19,8 +19,8 @@
                 id: {{directory.cur_id}}
       </span>
     </div>
-    <div style="height: 93vh;border: 1px solid #d6d6d6;">
-        <span style="height:93vh;">
+    <div style="height: 96vh;border: 1px solid #d6d6d6;">
+        <span>
             <Split v-model="split">
                 <div slot="left">
                   <Directory @click-directory="OnClickDirectory" v-show="menu_active_name==item" :service_type="item"
