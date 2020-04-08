@@ -41,9 +41,9 @@
                                  :icon="item.icon"
                                  :key="item.name"
                         >
-                          <DesignerDataStruct v-if="item.type=='data'"
+                          <DesignerDataData v-if="item.type=='data'"
                                               :directory_id="item.directory_id"
-                                              :directory_name="item.name" :split_value="split"></DesignerDataStruct>
+                                              :directory_name="item.name" :split_value="split"></DesignerDataData>
                           <DesignerLogicData v-if="item.type=='logic'" :directory_id="item.directory_id"
                                              :directory_name="item.name"></DesignerLogicData>
 
@@ -58,7 +58,7 @@
 
 <script>
     import Directory from '../../../../component/directory/Directory.vue'
-    import DesignerDataStruct from "../../../designer/designer_data/designer_data_struct/DesignerDataStruct.vue";
+    import DesignerDataData from "../../../designer/designer_data/designer_data_data/DesignerDataData";
     import {Tabs} from "view-design";
     import DesignerLogicData from "../../../designer/designer_logic/designer_logic_data/DesignerLogicData";
 
@@ -67,7 +67,7 @@
         components: {
             DesignerLogicData,
             Directory,
-            DesignerDataStruct,
+            DesignerDataData,
             Tabs
         },
         data() {
