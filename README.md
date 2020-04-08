@@ -40,6 +40,12 @@ DataBoard:
 
 ##### 数据状态
 
+###### 日志
+
+###### 监控
+
+###### 告警
+
 #### 使用者面板
 
 ##### 用户
@@ -59,24 +65,4 @@ DataBoard:
 ## 执行引擎
 
 引擎执行逻辑业务
-
-# 部署
-
-## 项目
-
-镜像仓库地址: https://hub.docker.com/r/tanshilindocker/laasops
-
-部署文档请参考 dependency/laasops.sh 文件
-
-## HTTPS
-
-依赖Nginx, 请参考 dependency/nginx.sh 文件
-
-## 中间件
-
-依赖MySQL, 请参考 distribution/dependency/mysql.sh 文件
-
-# 友链
-
-https://github.com/phodal/ledge
 
