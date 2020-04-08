@@ -1,15 +1,13 @@
 <template>
   <div>
-    <i-input v-model="directory.description"
-             :readonly="directory.description_disabled"
-             type="textarea">
-    </i-input>
+    <DirectoryDescription :directory_id="directory_id"></DirectoryDescription>
     <Button @click="init_table">Refresh</Button>
 
   </div>
 </template>
 
 <script>
+    import DirectoryDescription from "../../../../component/directory/DirectoryDescription";
     import designer_data_data from "./designer_data_data";
     import designer_data_struct from "../designer_data_struct/designer_data_struct";
     import directory from "../../../../component/directory/directory";
@@ -32,6 +30,9 @@
             split_value: {
                 default: 0.2,
             },
+        },
+        components: {
+            DirectoryDescription
         },
         data() {
             return {
