@@ -1,17 +1,79 @@
 <template>
   <div>
     <DirectoryDescription :directory_id="directory_id"></DirectoryDescription>
-    <Button @click="init_table">Refresh</Button>
+<!--    <Button @click="init_table">Refresh</Button>-->
+
+    <i-button type="primary"
+              @click="init_table">search</i-button>
+    <i-button type="primary"
+              @click="init_table">add</i-button>
+
+    <!--search area-->
+    <divider orientation="left" style="font-size: 12px;">
+      <i-button
+        @click="function(){this.search.expand_status=!this.search.expand_status;}">
+        click to expand/collapse search condition area</i-button></divider>
+    <div v-if="search.expand_status" style="margin-left: 10px">
+      <!--dynamic search form-->
+      <i-form :model="search.data"
+              :label-width="80">
+        <row>
+          <i-col span="6" v-for="item in search.template">
+            <form-item :label="item.label" :prop="item.prop">
+              <i-input v-model="item.v_model"></i-input>
+            </form-item>
+          </i-col>
+        </row>
+      </i-form>
+    </div>
+    <!--operator-->
+    <!--                                        <div style="margin-left: 10px;margin-bottom: 10px">-->
+    <!--                                            <i-button >test</i-button>-->
+    <!--                                        </div>-->
+    <i-table stripe border :columns="columns"
+             :data="data"
+             :loading="loading"
+             height="500"
+             border
+    ></i-table>
+    <!--data status show detail modal-->
+    <modal v-model="data_status_details.display" width="100vw">
+      <p slot="header">
+        <span>details</span>
+      </p>
+      <div>
+        <row>
+          <i-col span="6">
+            <div id="engine_data_logic_trigger_data_status_details_status_tree"
+            ></div>
+            <!--@on-select-change="load_target_time_log"-->
+          </i-col>
+          <i-col span="18" style="background: #2b2b2b;color: white">
+                                                        <pre v-for="item in data_status_details.log_list">
+                                                            {{item}}
+                                                        </pre>
+          </i-col>
+        </row>
+      </div>
+      <div slot="footer"></div>
+    </modal>
+    <div style="margin: 10px;overflow: hidden">
+      <div style="float: right;">
+        <page show-sizer :total="page.total" :current="1"
+              @on-change="function(current){page.current = current;init_table();}"
+              @on-page-size-change="function(page_size){page.page_size = page_size;init_table();}"
+        />
+      </div>
+    </div>
 
   </div>
 </template>
 
 <script>
     import DirectoryDescription from "../../../../component/directory/DirectoryDescription";
-    import designer_data_data from "./designer_data_data";
     import designer_data_struct from "../designer_data_struct/designer_data_struct";
-    import directory from "../../../../component/directory/directory";
     import component_table from "../../../../component/table";
+
     const update_description_btn_str = "update description";
     const save_description_btn_str = "save description";
 
@@ -36,11 +98,7 @@
         },
         data() {
             return {
-                directory: {
-                    description: "",
-                    description_disabled: true,
-                    description_btn_name: update_description_btn_str,
-                },
+                column_keys: [],
                 columns: [],
                 data: [],
                 data_status: [],
@@ -67,49 +125,19 @@
             }
         },
         methods: {
-            async init_description() {
-                const data_directory = {
-                    'id': this.directory_id,
-                }
-                try {
-                    const data_directory_result = await directory.select_("data", data_directory);
-                    this._data.directory.description = data_directory_result[0].description;
-                    this.$Message.success('select data directory description success');
-                } catch (e) {
-                    console.log(e);
-                    this.$Message.error(e.response.data);
-                }
-
-            },
-            async update_directory_description() {
-                if (this._data.directory.description_disabled) {
-                    this._data.directory.description_disabled = false;
-                    this._data.directory.description_btn_name = save_description_btn_str;
-                    return;
-                }
-                this._data.directory.description_disabled = true;
-                this._data.directory.description_btn_name = update_description_btn_str;
-                const data_directory = {
-                    'id': this.directory_id,
-                    'description': this._data.directory.description,
-                }
-                try {
-                    await directory.update_("data", data_directory);
-                    this.$Message.success('update data directory description success');
-                } catch (e) {
-                    console.log(e);
-                    this.$Message.error(e.response.data);
-                }
-
-            },
-            async init_table_column(){
-
-            },
-            async init_table() {
-                await cancel_opt_data(this);
+            async init_table_column() {
+                await component_table.cancel_opt_data(this);
                 this._data.loading = true;
                 try {
-                    // this._data.data = await designer_data_struct.select_({'did': this.directory_id});
+                    const data_struct_list = (await designer_data_struct.select_({'did': this.directory_id})).data;
+                    const column_width = component_table.calculate_table_column_width(false, this, data_struct_list.length);
+                    for (const item of data_struct_list) {
+                        const code = item["code"];
+                        const meaning = item["meaning"];
+                        this.column_keys.push(code);
+                        this.columns.push(component_table.editable_table_common_column(this, meaning, code, column_width));
+                        this.search.template.push({"label": meaning, "prop": code, "v_model": ""});
+                    }
                     this.$Message.success('query data_struct success');
                 } catch (e) {
                     console.log(e);
@@ -117,59 +145,11 @@
                 }
                 this._data.loading = false;
             },
-            init_insert_() {
-                // can not continuous multiple times add/update
-                if (this._data.is_in_opt) {
-                    this.$Message.error("can not continuous multiple times add/update");
-                    return;
-                }
-                this._data.is_in_opt = true;
-                this._data.opt_name = "insert";
+            async init_table(){
 
-                // construct column
-                const temp_data_one = {};
-                for (const item of this._data.columns) {
-                    const key = item["key"];
-                    if (key && key != "") {
-                        temp_data_one[key] = "";
-                    }
-                }
-                this._data.opt_line = this._data.data.length;
-                this._data.data.push(temp_data_one);
-            },
-            async insert_(component, data_struct) {
-                try {
-                    // await designer_data_struct.insert_(data_struct);
-                    component.$Message.success('insert data struct success');
-                    await component.init_table();
-                } catch (e) {
-                    console.log(e.response.data);
-                    component.$Message.error(e.response.data);
-                }
-            },
-            async update_(component, data_struct) {
-                try {
-                    // await designer_data_struct.update_(data_struct);
-                    component.$Message.success('update data struct success');
-                    await component.init_table();
-                } catch (e) {
-                    console.log(e.response.data);
-                    component.$Message.error(e.response.data);
-                }
-            },
-            async delete_(component, data_struct) {
-                try {
-                    // await designer_data_struct.delete_(data_struct);
-                    component.$Message.success('delete data struct success');
-                    await component.init_table();
-                } catch (e) {
-                    console.log(e.response.data);
-                    component.$Message.error(e.response.data);
-                }
             },
         },
         async created() {
-            await this.init_description();
             await this.init_table_column();
             await this.init_table();
         }
