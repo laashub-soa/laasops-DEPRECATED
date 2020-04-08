@@ -36,5 +36,12 @@ const routers = [
     },
     component: (resolve) => require(['./service/designer/designer_data/designer_data_struct/DesignerDataStruct.vue'], resolve)
   },
+  {
+    path: '/logic_data',
+    meta: {
+      title: 'LogicData'
+    },
+    component: (resolve) => require(['./service/designer/designer_logic/designer_logic_data/DesignerLogicData'], resolve)
+  },
 ];
 export default routers;

@@ -14,14 +14,11 @@ def test(engine_data):
     print("test")
     json = Runtime.require('json')
     print("json: ", json)
-    print("data_id: ", data_id, "data_data_id: ", data_data_id, "data_event_type: ", data_event_type, "logic_id: ",
-          logic_id, "func_name: ", func_name)
-    sql_result = Data.get(' select * from designer_data_data_%(data_id)s where id=%(data_data_id)s ',
-                          {'data_id': data_id, 'data_data_id': data_data_id})
+    print("data_id: ", data_id, "data_data_id: ", data_data_id, "data_event_type: ", data_event_type, "logic_id: ",logic_id, "func_name: ", func_name)
+    sql_result = Data.get(' select * from designer_data_data_%(data_id)s where id=%(data_data_id)s ', {'data_id': data_id, 'data_data_id': data_data_id})
     print(str(sql_result))
     # Data.get(' select username, password from aliyun ')
-    # Data.set(' insert into aliyun(username, password) values(%(username)s, %(password)s) ',
-    #          {'username': 'xxx', 'password': 'xxx'})
+    # Data.set(' insert into aliyun(username, password) values(%(username)s, %(password)s) ', {'username': 'xxx', 'password': 'xxx'})
     # Data.set(' update host set password where id = %(id)s ', {'id': '1'})
     # Data.set(' delete from aliyun where username = %(username)s ', {'username': 'xxx'})
 

@@ -4,10 +4,14 @@ import App from './app.vue';
 import routers from './router'
 import ViewUI from 'view-design';
 import 'view-design/dist/styles/iview.css';
+import VueCodemirror from 'vue-codemirror'
+import 'codemirror/lib/codemirror.css'
+
 import init from './init'
 
 Vue.use(VueRouter);
 Vue.use(ViewUI);
+Vue.use(VueCodemirror);
 
 Vue.config.productionTip = false
 
