@@ -1,15 +1,8 @@
 <template>
   <div>
-    <i-input v-model="directory.description"
-             :readonly="directory.description_disabled"
-             type="textarea">
-    </i-input>
+    <DirectoryDescription :directory_id="directory_id"></DirectoryDescription>
     <Button @click="init_table">Refresh</Button>
-    <i-button @click="update_directory_description">
-      {{directory.description_btn_name}}
-    </i-button>
-    <i-button @click="init_insert_">add line
-    </i-button>
+    <i-button @click="init_insert_">Add</i-button>
     <span style="user-select: text">table_prefix_name: designer_data_data_</span>
     <i-table stripe border :columns="columns"
              :data="data"
@@ -69,15 +62,10 @@
 
 <script>
     import designer_data_struct from "./designer_data_struct";
-    import directory from "../../../../component/directory/directory";
     import component_table from "../../../../component/table";
-
-    const update_description_btn_str = "update description";
-    const save_description_btn_str = "save description";
-
+    import DirectoryDescription from "../../../../component/directory/DirectoryDescription";
 
     let column_width = component_table.calculate_table_column_width(true, this, 3);
-
 
     export default {
         name: "DesignerDataStruct",
@@ -94,13 +82,11 @@
                 default: 0.2,
             },
         },
+        components: {
+            DirectoryDescription
+        },
         data() {
             return {
-                directory: {
-                    description: "",
-                    description_disabled: true,
-                    description_btn_name: update_description_btn_str,
-                },
                 columns: [
                     component_table.editable_table_common_column(this, "code", "code", column_width),
                     component_table.editable_table_common_column(this, "meaning", "meaning", column_width),
@@ -135,40 +121,6 @@
             }
         },
         methods: {
-            async init_description() {
-                const data_directory = {
-                    'id': this.directory_id,
-                }
-                try {
-                    const data_directory_result = await directory.select_("data", data_directory);
-                    this._data.directory.description = data_directory_result[0].description;
-                    this.$Message.success('select data directory description success');
-                } catch (e) {
-                    console.log(e);
-                    this.$Message.error(e.response.data);
-                }
-
-            },
-            async update_directory_description() {
-                if (this._data.directory.description_disabled) {
-                    this._data.directory.description_disabled = false;
-                    this._data.directory.description_btn_name = save_description_btn_str;
-                    return;
-                }
-                this._data.directory.description_disabled = true;
-                this._data.directory.description_btn_name = update_description_btn_str;
-                const data_directory = {
-                    'id': this.directory_id,
-                    'description': this._data.directory.description,
-                }
-                try {
-                    await directory.update_("data", data_directory);
-                    this.$Message.success('update data directory description success');
-                } catch (e) {
-                    console.log(e);
-                    this.$Message.error(e.response.data);
-                }
-            },
             async init_table() {
                 await component_table.cancel_opt_data(this);
                 this._data.loading = true;
@@ -233,7 +185,6 @@
             },
         },
         async created() {
-            await this.init_description();
             await this.init_table();
         }
     }
