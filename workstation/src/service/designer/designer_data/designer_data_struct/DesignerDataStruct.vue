@@ -4,12 +4,11 @@
              :readonly="directory.description_disabled"
              type="textarea">
     </i-input>
-    <i-button type="primary"
-              @click="update_directory_description">
+    <Button @click="init_table">Refresh</Button>
+    <i-button @click="update_directory_description">
       {{directory.description_btn_name}}
     </i-button>
-    <i-button type="primary"
-              @click="init_insert_">add line
+    <i-button @click="init_insert_">add line
     </i-button>
     <span style="user-select: text">table_prefix_name: designer_data_data_</span>
     <i-table stripe border :columns="columns"
