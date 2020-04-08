@@ -364,12 +364,14 @@
                     this.$Message.error(e.response.data);
                 }
             },
-            async init_description(){
+            async init_description() {
                 const data_directory = {
                     'id': this.directory_id,
                 }
                 try {
-                    await directory.select_("data", data_directory);
+                    const data_directory_result = await directory.select_("data", data_directory);
+                    this._data.directory.description = data_directory_result[0].description;
+                    console.log(data_directory_result);
                     this.$Message.success('select data directory description success');
                 } catch (e) {
                     console.log(e);
@@ -430,6 +432,7 @@
         },
         async created() {
             await this.init_table();
+            await this.init_description();
         }
     }
 </script>

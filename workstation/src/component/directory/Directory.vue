@@ -181,7 +181,7 @@
             },
             async init_tree() {
                 try {
-                    this._data.tree = new Tree(await directory.select_(this.service_type, {}));
+                    this._data.tree = new Tree(await directory.select_tree(this.service_type));
                     this.$Message.success('select directory success');
                 } catch (e) {
                     console.log(e);

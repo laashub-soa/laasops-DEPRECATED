@@ -1,7 +1,14 @@
 import axios from "axios";
 
-async function select_(service_type, data_directory, ) {
-  let net_request_result = await axios.post("/distribution/" + service_type + "/directory/select", data_directory);
+async function select_(service_type, directory) {
+  let net_request_result = await axios.post("/distribution/" + service_type + "/directory/select", directory);
+  if (!net_request_result || !net_request_result.status || net_request_result.status != 200 || !net_request_result.data) return;
+  return net_request_result.data;
+}
+
+
+async function select_tree(service_type,) {
+  let net_request_result = await axios.post("/distribution/" + service_type + "/directory/select", {});
   if (!net_request_result || !net_request_result.status || net_request_result.status != 200 || !net_request_result.data) return;
   let original_tree_list = net_request_result.data;
   // adapter list to tree
@@ -56,6 +63,7 @@ async function delete_(service_type, data_directory) {
 }
 
 export default {
+  select_tree,
   select_,
   insert_,
   update_,
