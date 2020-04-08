@@ -356,6 +356,7 @@
             },
             async init_table() {
                 await cancel_opt_data(this);
+                this._data.loading = true;
                 try {
                     this._data.data = await designer_data_struct.select_({'did': this.directory_id});
                     this.$Message.success('query data_struct success');
@@ -363,6 +364,7 @@
                     console.log(e);
                     this.$Message.error(e.response.data);
                 }
+                this._data.loading = false;
             },
             async init_description() {
                 const data_directory = {
