@@ -364,6 +364,19 @@
                     this.$Message.error(e.response.data);
                 }
             },
+            async init_description(){
+                const data_directory = {
+                    'id': this.directory_id,
+                }
+                try {
+                    await directory.select_("data", data_directory);
+                    this.$Message.success('select data directory description success');
+                } catch (e) {
+                    console.log(e);
+                    this.$Message.error(e.response.data);
+                }
+
+            },
             init_insert_() {
                 // can not continuous multiple times add/update
                 if (this._data.is_in_opt) {

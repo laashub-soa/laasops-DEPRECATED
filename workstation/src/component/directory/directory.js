@@ -1,7 +1,7 @@
 import axios from "axios";
 
-async function select_(service_type,) {
-  let net_request_result = await axios.post("/distribution/" + service_type + "/directory/select", {});
+async function select_(service_type, data_directory, ) {
+  let net_request_result = await axios.post("/distribution/" + service_type + "/directory/select", data_directory);
   if (!net_request_result || !net_request_result.status || net_request_result.status != 200 || !net_request_result.data) return;
   let original_tree_list = net_request_result.data;
   // adapter list to tree
