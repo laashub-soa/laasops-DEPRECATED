@@ -27,12 +27,16 @@
                              v-for="item in service_type_list"></Directory>
                 </div>
                 <div slot="right">
-                    <Tabs v-model="tab_pane_cur" type="card" closable @on-tab-remove="handleTabRemove"
+                    <Tabs v-model="tab_pane_cur" type="card" closable
+                          @on-tab-remove="handleTabRemove"
                           @on-click="onClickTab" :animated="false"
                           style="user-select:none;">
+
                         <TabPane :label="item.label"
                                  v-for="(item,index) in tab_pane"
-                                 :icon="item.icon">
+                                 :icon="item.icon"
+                                 :key="item.name"
+                        >
                           <DesignerDataStruct v-if="item.type=='data'"
                                               :directory_id="item.directory_id"
                                               :directory_name="item.name" :split_value="split"></DesignerDataStruct>
@@ -48,12 +52,14 @@
 <script>
     import Directory from '../../component/directory/Directory.vue'
     import DesignerDataStruct from "./designer_data/designer_data_struct/DesignerDataStruct";
+    import {Tabs} from "view-design";
 
     export default {
         name: "Designer",
         components: {
             Directory,
-            DesignerDataStruct
+            DesignerDataStruct,
+            Tabs
         },
         data() {
             return {
@@ -73,7 +79,7 @@
                 split: 0.2,
                 // tab_panel
                 tab_panel: {
-                    visible: [],
+
                 },
                 tab_pane: [],
                 tab_pane_cur: -1,
@@ -81,17 +87,22 @@
             }
         },
         methods: {
-            onClickTab(name) {
-                const tab_data = this._data.tab_pane[name];
+            onClickTab(index) {
+                console.log(index);
+                const tab_data = this._data.tab_pane[index];
                 // breadcrumb
                 this._data.breadcrumb.list = tab_data['breadcrumb_list'];
                 this._data.directory.cur_id = tab_data['directory_id'];
                 // menu
                 this._data.menu_active_name = tab_data['type'];
                 // tab
-                this._data.tab_panel_cur_id = this._data.tab_pane[name]["name"];
+                this._data.tab_panel_cur_id = this._data.tab_pane[index]["name"];
             },
-            handleTabRemove(name) {
+            handleTabRemove(index) {
+                // this._data.tab_pane.splice(index, 1);
+                this.$nextTick(function () {
+                    console.log(this.$refs.tabs);
+                });
             },
             OnClickDirectory(service_type, directory) {
                 const _id = directory["id"];
@@ -130,7 +141,6 @@
                     if (cur_service_type == 'logic') {
                         icon = 'md-cog';
                     }
-
                     this._data.tab_pane.push({
                         'type': cur_service_type,
                         'name': tab_panel_id,
