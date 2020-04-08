@@ -1,5 +1,7 @@
 # 目标: 上生产
 
+refactor the last version repo to vue2/python restapi
+
 DataBoard: 
 
 ​	authorized login: github
@@ -16,6 +18,12 @@ DataBoard:
 
 从数据的角度驱动由分发、组装由数据和指令库构造的逻辑
 
+Workstation -> Distribution
+
+​					   -> Engine
+
+Engine		   -> Distribution
+
 ![simple_architecture](docs/images/simple_architecture.png)
 
 # LaasHub 组成元素
@@ -24,7 +32,45 @@ DataBoard:
 
 ### 设计器
 
-![simple_architecture](docs/images/Designer-basic-think.png)
+#### Data
+
+##### 形状
+
+##### 描述
+
+##### 属性
+
+###### 属性名
+
+###### 属性类型(基本/引用)
+
+###### 属性约束
+
+###### 默认值
+
+##### 包含类
+
+##### 输入/输出管道
+
+##### 版本化、可复制
+
+##### 套版
+
+#### Command/Logic
+
+##### 描述
+
+##### 语言:版本:依赖包
+
+##### 输入数据
+
+##### 输出数据
+
+##### 订阅数据
+
+##### 触发数据
+
+##### 版本化、可复制
 
 ### 用户面板
 
@@ -55,8 +101,6 @@ DataBoard:
 ##### 流程
 
 ##### 权限
-
-#### 审计
 
 ## 分发库
 
