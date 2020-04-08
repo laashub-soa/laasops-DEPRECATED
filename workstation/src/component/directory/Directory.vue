@@ -1,7 +1,7 @@
 <template>
   <div>
     <Button @click="init_tree">Refresh</Button>
-    <Button @click="onAddNode(null)">Add</Button>
+    <Button v-if="!is_databoard" @click="onAddNode(null)">Add</Button>
     <vue-tree-list
       @click="onClick"
       @change-name="onChangeName"
@@ -13,6 +13,12 @@
       default-leaf-node-name="new"
       v-bind:default-expanded="true"
     >
+      <span v-if="is_databoard" class="icon" slot="addTreeNodeIcon"></span>
+      <span v-if="is_databoard" class="icon" slot="addLeafNodeIcon"></span>
+      <span v-if="is_databoard" class="icon" slot="editNodeIcon"></span>
+      <span v-if="is_databoard" class="icon" slot="delNodeIcon"></span>
+      <span v-if="is_databoard" class="icon" slot="leafNodeIcon"></span>
+      <span v-if="is_databoard" class="icon" slot="treeNodeIcon"></span>
     </vue-tree-list>
   </div>
 </template>
@@ -24,6 +30,11 @@
     export default {
         name: "Directory",
         props: {
+            "is_databoard": {
+                type: Boolean,
+                default: false,
+                required: false,
+            },
             "service_type": {
                 type: String,
                 default: "data",

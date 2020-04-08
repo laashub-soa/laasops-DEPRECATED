@@ -43,5 +43,12 @@ const routers = [
     },
     component: (resolve) => require(['./service/designer/designer_logic/designer_logic_data/DesignerLogicData'], resolve)
   },
+  {
+    path: '/databoard',
+    meta: {
+      title: 'DataBoard'
+    },
+    component: (resolve) => require(['./service/dashboard/databoard/databoard/DataBoard.vue'], resolve)
+  },
 ];
 export default routers;
