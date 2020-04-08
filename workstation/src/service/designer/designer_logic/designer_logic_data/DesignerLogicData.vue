@@ -104,6 +104,6 @@
   @import '~codemirror/addon/display/fullscreen.css';
 
   .CodeMirror {
-    height: 100vh;
+    /*height: 100vh;*/
   }
 </style>

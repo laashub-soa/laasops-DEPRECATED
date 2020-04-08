@@ -43,6 +43,9 @@
                           <DesignerDataStruct v-if="item.type=='data'"
                                               :directory_id="item.directory_id"
                                               :directory_name="item.name" :split_value="split"></DesignerDataStruct>
+                          <DesignerLogicData v-if="item.type=='logic'" :directory_id="item.directory_id"
+                                             :directory_name="item.name"></DesignerLogicData>
+
                         </TabPane>
                     </Tabs>
                 </div>
@@ -56,10 +59,12 @@
     import Directory from '../../component/directory/Directory.vue'
     import DesignerDataStruct from "./designer_data/designer_data_struct/DesignerDataStruct";
     import {Tabs} from "view-design";
+    import DesignerLogicData from "./designer_logic/designer_logic_data/DesignerLogicData";
 
     export default {
         name: "Designer",
         components: {
+            DesignerLogicData,
             Directory,
             DesignerDataStruct,
             Tabs
@@ -156,20 +161,20 @@
                         label = breadcrumb_list.join(" / ");
                     }
                 }
-                  let icon = 'md-albums';
-                  if (cur_service_type == 'logic') {
-                      icon = 'md-cog';
-                  }
-                  this._data.tab_pane.push({
-                      'type': cur_service_type,
-                      'name': tab_panel_id,
-                      'directory_id': _id,
-                      'breadcrumb_list': breadcrumb_list,
-                      'label': label,
-                      'visible': true,
-                      'icon': icon,
-                  });
-                  this._data.tab_pane_cur = this._data.tab_pane.length - 1;
+                let icon = 'md-albums';
+                if (cur_service_type == 'logic') {
+                    icon = 'md-cog';
+                }
+                this._data.tab_pane.push({
+                    'type': cur_service_type,
+                    'name': tab_panel_id,
+                    'directory_id': _id,
+                    'breadcrumb_list': breadcrumb_list,
+                    'label': label,
+                    'visible': true,
+                    'icon': icon,
+                });
+                this._data.tab_pane_cur = this._data.tab_pane.length - 1;
             },
         },
     }
