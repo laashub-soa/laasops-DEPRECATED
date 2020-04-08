@@ -12,12 +12,16 @@ app = Blueprint('distribution_data_directory', __name__,
 
 @app.route('/select', methods=['POST'])
 def select():
-    return json.dumps(mymysql.execute("""
-        select id, pid, name, description
-        from designer_data_directory
-    """, {
-
-    }))
+    request_data = form.check()
+    select_sql_keys = "id, pid, name"
+    select_sql_where = ''
+    params = {}
+    if request_data.__contains__('id'):
+        select_sql_keys += ', description'
+        select_sql_where = " and id = %(id)s "
+        params['id'] = request_data["id"]
+    select_sql = 'select ' + select_sql_keys + ' from designer_data_directory where 1 = 1 ' + select_sql_where
+    return json.dumps(mymysql.execute(select_sql, params))
 
 
 @app.route('/insert', methods=['POST'])
