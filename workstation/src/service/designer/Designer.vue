@@ -27,12 +27,15 @@
                              v-for="item in service_type_list"></Directory>
                 </div>
                 <div slot="right">
-                    <Tabs v-model="tab_pane_cur" type="card" closable
+                    <Tabs v-model="tab_pane_cur" type="card"
                           @on-tab-remove="handleTabRemove"
                           @on-click="onClickTab" :animated="false"
-                          style="user-select:none;">
+                          style="user-select:none;"
+                          closable
+                          :before-remove='beforeRemove'
+                    >
 
-                        <TabPane :label="item.label"
+                        <TabPane v-if="item" :label="item.label"
                                  v-for="(item,index) in tab_pane"
                                  :icon="item.icon"
                                  :key="item.name"
@@ -79,7 +82,7 @@
                 split: 0.2,
                 // tab_panel
                 tab_panel: {
-
+                    if: false,
                 },
                 tab_pane: [],
                 tab_pane_cur: -1,
@@ -87,6 +90,13 @@
             }
         },
         methods: {
+            beforeRemove(index) {
+                const component = this;
+                return new Promise(function (resolve, reject) {
+                    component._data.tab_pane.splice(index, 1);
+                    reject(index);
+                })
+            },
             onClickTab(index) {
                 console.log(index);
                 const tab_data = this._data.tab_pane[index];
@@ -99,10 +109,6 @@
                 this._data.tab_panel_cur_id = this._data.tab_pane[index]["name"];
             },
             handleTabRemove(index) {
-                // this._data.tab_pane.splice(index, 1);
-                this.$nextTick(function () {
-                    console.log(this.$refs.tabs);
-                });
             },
             OnClickDirectory(service_type, directory) {
                 const _id = directory["id"];
