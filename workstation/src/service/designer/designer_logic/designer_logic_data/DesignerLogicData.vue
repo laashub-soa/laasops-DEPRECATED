@@ -1,7 +1,7 @@
 <template>
   <div>
     language: Python; Version: 3+;
-    <i-button type="primary" @click="standard.display = true">Show Standard</i-button>
+    <i-button @click="standard.display = true">Show Standard</i-button>
     <modal v-model="standard.display" title="Logic Coding Standard" width="80vw">
       <pre style="width: 90vw">{{standard.content}}</pre>
     </modal>
@@ -137,6 +137,6 @@
   @import '~codemirror/addon/display/fullscreen.css';
 
   .CodeMirror {
-    /*height: 100vh;*/
+    height: 840px;
   }
 </style>

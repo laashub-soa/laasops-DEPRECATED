@@ -22,8 +22,16 @@ def select():
 @app.route('/update', methods=['POST'])
 def update():
     request_data = form.check(["id", "file"])
+    _id = request_data['id']
+    file = request_data['file']
+    update_designer_data_logic_associate(_id, file)
     return json.dumps(mymysql.execute("""
         update designer_logic_data
         set file = %(file)s
         where id = %(id)s
     """, request_data))
+
+
+def update_designer_data_logic_associate(logic_id, file):
+
+    pass
