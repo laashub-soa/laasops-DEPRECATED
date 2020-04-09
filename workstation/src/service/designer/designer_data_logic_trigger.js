@@ -6,6 +6,13 @@ async function select_(data_id) {
   return net_request_result.data;
 }
 
+async function select_batch_status(data_data_data_id_list_str) {
+  let net_request_result = await axios.post("/distribution/data_logic/trigger/select_batch_status", data_data_data_id_list_str);
+  if (!net_request_result || !net_request_result.status || net_request_result.status != 200 || !net_request_result.data) return;
+  return net_request_result.data;
+}
+
 export default {
-  select_
+  select_,
+  select_batch_status,
 }

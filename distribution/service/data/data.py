@@ -81,7 +81,6 @@ def select():
     # data
     select_sql = 'select ' + select_sql_keys + ' from ' + designer_data_data_table_name + ' where 1 = 1 ' \
                  + select_sql_where + select_sql_page
-    print(select_sql)
     data = mymysql.execute(select_sql, select_value)
     #
     return json.dumps({

@@ -163,8 +163,6 @@
                     }
                     // operation column
                     this._data.columns.push(component_table.editable_table_common_operation_column(this));
-                    // status column
-                    this._data.columns.push(component_table.table_column_operation_status(this));
 
                     this.$Message.success('query data data columns success');
                 } catch (e) {
@@ -209,8 +207,11 @@
                     const resp_data = await designer_data_data.select_(request_data);
                     this._data.page.total = resp_data['page_total'];
                     this._data.data = resp_data['data'];
-
                     this.$Message.success('query data_struct success');
+                    await this.init_data_logic_trigger_status();
+                    // status column
+                    if (this._data.columns.length < this._data.keys.length + 2)
+                        this._data.columns.push(component_table.table_column_operation_status(this));
                 } catch (e) {
                     console.log(e);
                     this.$Message.error(e.response.data);
@@ -222,6 +223,24 @@
                 const designer_data_logic_trigger_list = await designer_data_logic_trigger.select_({'data_id': this.directory_id});
                 for (const item of designer_data_logic_trigger_list) {
                     this._data.associate.trigger[item["type"]].push(item["logic_id"] + ":" + item["func_name"]);
+                }
+            },
+            async init_data_logic_trigger_status() {
+                if (!this._data.data || this._data.data.length < 1) return;
+                const data_id = this.directory_id;
+                let data_data_data_id_list_str = "";
+                for (const item of this._data.data) {
+                    const data_data_id = item["id"];
+                    data_data_data_id_list_str += "'" + data_id + "_" + data_data_id + "', ";
+                }
+                data_data_data_id_list_str = data_data_data_id_list_str.substring(0, data_data_data_id_list_str.length - 2);
+                try {
+                    let net_request_result = await designer_data_logic_trigger.select_batch_status({"data_data_data_id_list_str": data_data_data_id_list_str});
+                    this._data.data_status = net_request_result;
+                    this.$Message.success('query data logic trigger success');
+                } catch (e) {
+                    console.log(e);
+                    this.$Message.error(e.response.data);
                 }
             },
             init_insert_() {
