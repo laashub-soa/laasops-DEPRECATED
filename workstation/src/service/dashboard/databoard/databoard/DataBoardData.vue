@@ -345,7 +345,14 @@
                     console.log(e.response.data);
                     component.$Message.error(e.response.data);
                 }
-            }
+            },
+            async select_data_logic_trigger_status_details_status(component, data_data_id) {
+                component._data.data_status_details.tree = [];
+
+            },
+            async select_data_logic_trigger_status_details_log(tree_level_type, tree_level_data) {
+
+            },
         },
         async created() {
             await this.init_associate();
@@ -353,6 +360,8 @@
             await this.init_table();
         }
     }
+    // TODO bug: data operation need more check, there can be only operation at a time
+    // TODO improvement: insert/update/delete data operation when across the multi data, so it also need refactor the backend code
 </script>
 
 <style scoped>
