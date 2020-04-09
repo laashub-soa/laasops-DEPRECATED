@@ -210,13 +210,14 @@
                     this.$Message.success('query data_struct success');
                     await this.init_data_logic_trigger_status();
                     // status column
-                    if (this._data.columns.length < this._data.keys.length + 2)
+                    if (this._data.columns.length < this._data.column_keys.length + 2)
                         this._data.columns.push(component_table.table_column_operation_status(this));
                 } catch (e) {
                     console.log(e);
                     this.$Message.error(e.response.data);
+                } finally {
+                    this._data.loading = false;
                 }
-                this._data.loading = false;
             },
             async init_associate() {
                 // trigger
