@@ -118,8 +118,6 @@ function editable_table_common_operation_column(component) {
               const cur_line_data = component._data.data[cur_line_index];
               cur_line_data['did'] = component.directory_id;
 
-              console.log("cur_line_data");
-              console.log(cur_line_data);
               if ("insert" == component._data.opt_name) {
                 component.insert_(component, cur_line_data);
               } else if ("update" == component._data.opt_name) {

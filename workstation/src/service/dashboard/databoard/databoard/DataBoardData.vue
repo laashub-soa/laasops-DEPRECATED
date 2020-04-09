@@ -74,6 +74,7 @@
     import designer_data_struct from "../../../designer/designer_data/designer_data_struct/designer_data_struct";
     import designer_data_data from "./data_board_data";
     import component_table from "../../../../component/table";
+    import designer_data_logic_trigger from "../../../designer/designer_data_logic_trigger";
 
     const update_description_btn_str = "update description";
     const save_description_btn_str = "save description";
@@ -122,6 +123,21 @@
                     expand_status: false,
                     data: {},
                     template: [],
+                },
+                associate: {
+                    trigger: {
+                        "insert": [],
+                        "update": [],
+                        "delete": [],
+                    },
+                },
+                data_event_2_logic: {
+                    cur_choose: {
+                        value: '',
+                        logic_id: '',
+                        func_name: '',
+                    },
+                    data: [],
                 },
             }
         },
@@ -200,11 +216,19 @@
                 }
                 this._data.loading = false;
             },
+            async init_associate() {
+                // trigger
+                const designer_data_logic_trigger_list = await designer_data_logic_trigger.select_({'data_id': this.directory_id});
+                for (const item of designer_data_logic_trigger_list) {
+                    this._data.associate.trigger[item["type"]].push(item["logic_id"] + ":" + item["func_name"]);
+                }
+            },
             init_insert_() {
                 component_table.init_insert_(this);
             },
             async insert_(component, data_data) {
                 try {
+                    if (!await this.associate_data_logic_event(component, data_data, 'insert')) return;
                     await designer_data_data.insert_(data_data);
                     component.$Message.success('insert data data success');
                     await component.init_table();
@@ -215,6 +239,7 @@
             },
             async update_(component, data_data) {
                 try {
+                    if (!await this.associate_data_logic_event(component, data_data, 'update')) return;
                     await designer_data_data.update_(data_data);
                     component.$Message.success('update data data success');
                     await component.init_table();
@@ -225,6 +250,7 @@
             },
             async delete_(component, data_data) {
                 try {
+                    if (!await this.associate_data_logic_event(component, data_data, 'delete')) return;
                     await designer_data_data.delete_(data_data);
                     component.$Message.success('delete data data success');
                     await component.init_table();
@@ -233,8 +259,52 @@
                     component.$Message.error(e.response.data);
                 }
             },
+            async associate_data_logic_event(component, data_data, data_event_type) {
+                if (component.associate.trigger[component.opt_name].length < 1) return true; // data event without logic
+
+                component._data.data_event_2_logic.data = [];
+                for (const item of component._data.associate.trigger[data_event_type]) {
+                    component._data.data_event_2_logic.data.push({
+                        "value": item,
+                        "label": item,
+                    });
+                }
+                const result = await new Promise(function (resolve, reject) {
+                    component.$Modal.confirm({
+                        onOk: () => {
+                            if (!component._data.data_event_2_logic.cur_choose.value || component._data.data_event_2_logic.cur_choose.value == "") {
+                                resolve(false);
+                            }
+                            resolve(true);
+                        },
+                        onCancel: () => {
+                            resolve(false);
+                        },
+                        render: (h) => {
+                            return h('cascader', {
+                                props: {
+                                    "mask-closable": false,
+                                    value: component._data.data_event_2_logic.cur_choose.value,
+                                    data: component._data.data_event_2_logic.data,
+                                },
+                                on: {
+                                    'on-change': function (value, selectedData) {
+                                        component._data.data_event_2_logic.cur_choose.value = value;
+                                    }
+                                },
+                            })
+                        }
+                    })
+                });
+                if (!result) {
+                    component.$Message.error("you must choose and logic_func when the data_event adapter an logic_func");
+                }
+                return result;
+
+            },
         },
         async created() {
+            await this.init_associate();
             await this.init_table_column();
             await this.init_table();
         }
