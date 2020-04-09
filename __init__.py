@@ -5,12 +5,12 @@ from flask_cors import CORS
 
 urllib3.disable_warnings()
 # init the web framework
-from flask import Flask, redirect, make_response
+from flask import Flask, make_response, render_template
 import logging
 from logging.handlers import TimedRotatingFileHandler
 from distribution.exception import MyServiceException
 
-app = Flask(__name__, static_folder='workstation')
+app = Flask(__name__, static_folder='workstation/dist')
 
 app.config['JSON_AS_ASCII'] = False
 app.config['SECRET_KEY'] = os.urandom(24)
@@ -24,7 +24,7 @@ def static_path(path):
 
 @app.route('/')
 def index():
-    return redirect("/index.html")
+    return app.send_static_file("index.html")
 
 
 @app.errorhandler(500)
