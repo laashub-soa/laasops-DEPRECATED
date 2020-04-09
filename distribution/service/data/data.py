@@ -52,3 +52,35 @@ def select():
     return json.dumps(mymysql.execute(
         'select ' + select_sql_keys + ' from ' + designer_data_data_table_name,
         json.loads(json.dumps(request_data))))
+
+
+@app.route('/update', methods=['POST'])
+def update():
+    request_data = form.check(['did', 'id'])
+    did = request_data['did']
+    designer_data_data_table_name = 'designer_data_data_' + str(did)
+    update_sql = ''
+    # got the data table' column
+    data_struct_list = json.loads(struct.select())
+    for item in data_struct_list:
+        data_data_table_column = item['code']
+        if 'id' == data_data_table_column:
+            continue
+        if request_data.__contains__(data_data_table_column):
+            update_sql += data_data_table_column + ' = ' + '%(' + data_data_table_column + ')s, '
+    update_sql = update_sql[:len(update_sql) - 2]
+
+    return json.dumps(mymysql.execute(
+        'update ' + designer_data_data_table_name + ' set ' + update_sql + ' where id = %(id)s ',
+        request_data))
+
+
+@app.route('/delete', methods=['POST'])
+def delete():
+    request_data = form.check(['did', 'id'])
+    did = request_data['did']
+    designer_data_data_table_name = 'designer_data_data_' + str(did)
+
+    return json.dumps(mymysql.execute(
+        'delete from ' + designer_data_data_table_name + ' where id = %(id)s ',
+        request_data))
