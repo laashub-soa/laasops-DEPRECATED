@@ -45,6 +45,7 @@
         <row>
           <i-col span="6">
             <vue-tree-list
+              @click="onClickEngineDataLogicDetailStatusTree"
               :model="data_status_details_tree"
               default-tree-node-name="new"
               default-leaf-node-name="new"
@@ -423,8 +424,23 @@ data_event:1(1):insert:(time)
                     component.$Message.error(e.response.data);
                 }
             },
-            async select_engine_data_logic_trigger_status_details_log(tree_level_type, tree_level_data) {
-
+            async select_engine_data_logic_trigger_status_details_log(component, tree_level_type, tree_level_data) {
+                tree_level_data["data_id"] = component.directory_id;
+                try {
+                    tree_level_data['data_event'] = tree_level_type;
+                    const net_request_result = await engine.select_engine_data_logic_trigger_status_details_log(tree_level_data)
+                    this._data.data_status_details.log_list = [];
+                    for (const item of net_request_result) {
+                        this._data.data_status_details.log_list.push(item["log"]);
+                    }
+                    component.$Message.success('select engine data logic trigger status details log success');
+                } catch (e) {
+                    console.log(e.response.data);
+                    component.$Message.error(e.response.data);
+                }
+            },
+            async onClickEngineDataLogicDetailStatusTree(params) {
+                await this.select_engine_data_logic_trigger_status_details_log(this, params.tree_level_type, params.tree_level_data);
             },
         },
         async created() {

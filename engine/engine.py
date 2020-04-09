@@ -51,4 +51,30 @@ def select_engine_data_logic_trigger_status_details_status():
 
 @app.route('/select_engine_data_logic_trigger_status_details_log', methods=['POST'])
 def select_engine_data_logic_trigger_status_details_log():
-    pass
+    request_data = form.check(['data_id', 'data_data_id', 'data_event'])
+    data_event = request_data['data_event']
+    sql = """
+                   select log
+                   from engine_data_logic_trigger_data_log
+                   where 1=1
+                        and data_id = %(data_id)s
+                        and data_data_id = %(data_data_id)s
+    """
+    if 'tree' == data_event:
+        pass
+    elif 'data_event' == data_event:
+        sql += 'and data_event_type = %(data_event_type)s'
+    elif 'logic' == data_event:
+        sql += """
+                    and data_event_type = %(data_event_type)s
+                    and logic_id = %(logic_id)s
+                    and func_name = %(func_name)s
+        """
+    elif 'data_status' == data_event:
+        sql += """
+                    and data_event_type = %(data_event_type)s
+                    and logic_id = %(logic_id)s
+                    and func_name = %(func_name)s
+                    and create_time >= str_to_date(%(create_time_str)s, '%%Y-%%m-%%d %%T')
+        """
+    return json.dumps(mymysql.execute(sql, request_data))
