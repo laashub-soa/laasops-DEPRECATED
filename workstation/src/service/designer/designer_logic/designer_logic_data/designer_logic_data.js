@@ -40,7 +40,7 @@ def test(engine_data):
 
 
 # start data_define
-data_define = {
+{
     'get': [
         '21',
     ],
