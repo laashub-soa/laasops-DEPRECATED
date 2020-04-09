@@ -9,7 +9,7 @@
     <!--search area-->
     <divider orientation="left" style="font-size: 12px;">
       <i-button
-        @click="function(){this.search.expand_status=!this.search.expand_status;}">
+        @click="function(){search.expand_status=!search.expand_status;}">
         EXPAND/COLLAPSE SEARCH CONDITION AREA
       </i-button>
     </divider>
