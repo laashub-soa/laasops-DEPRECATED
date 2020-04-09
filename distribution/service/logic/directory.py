@@ -26,12 +26,22 @@ def insert():
     pid = request_data["pid"]
     name = request_data["name"]
 
-    return json.dumps(mymysql.execute("""
+    insert_result = mymysql.execute("""
         insert into designer_logic_directory(pid, name) values (%(pid)s, %(name)s)
     """, {
         "pid": pid,
         "name": name,
-    }))
+    })
+
+    # insert logic_data
+    mymysql.execute("""
+            insert into designer_logic_data(did, file) values (%(did)s, %(file)s)
+        """, {
+        "did": insert_result,
+        "file": '',
+    })
+
+    return json.dumps(insert_result)
 
 
 @app.route('/update', methods=['POST'])
@@ -69,6 +79,11 @@ def delete():
             """, {"id": _id})
 
     def delete_one_level(_id):
+        # delete logic data
+        mymysql.execute("""
+                    delete from designer_logic_data where did = %(did)s
+                    """, {"did": _id})
+
         return mymysql.execute("""
             delete
             from designer_logic_directory
