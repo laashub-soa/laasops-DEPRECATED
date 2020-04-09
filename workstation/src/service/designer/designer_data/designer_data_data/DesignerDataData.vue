@@ -1,16 +1,18 @@
 <template>
   <div>
     <DirectoryDescription :directory_id="directory_id"></DirectoryDescription>
-<!--    <Button @click="init_table">Refresh</Button>-->
+    <!--    <Button @click="init_table">Refresh</Button>-->
 
     <i-button @click="init_table">SEARCH</i-button>
-    <i-button @click="init_table">ADD</i-button>
+    <i-button @click="init_insert_">ADD</i-button>
 
     <!--search area-->
     <divider orientation="left" style="font-size: 12px;">
       <i-button
         @click="function(){this.search.expand_status=!this.search.expand_status;}">
-        EXPAND/COLLAPSE SEARCH CONDITION AREA</i-button></divider>
+        EXPAND/COLLAPSE SEARCH CONDITION AREA
+      </i-button>
+    </divider>
     <div v-if="search.expand_status" style="margin-left: 10px">
       <!--dynamic search form-->
       <i-form :model="search.data"
@@ -129,6 +131,7 @@
                 try {
                     const data_struct_list = await designer_data_struct.select_({'did': this.directory_id});
                     const column_width = component_table.calculate_table_column_width(false, this, data_struct_list.length);
+                    // basic column
                     for (const item of data_struct_list) {
                         const code = item["code"];
                         const meaning = item["meaning"];
@@ -136,6 +139,11 @@
                         this.columns.push(component_table.editable_table_common_column(this, meaning, code, column_width));
                         this.search.template.push({"label": meaning, "prop": code, "v_model": ""});
                     }
+                    // operation column
+                    this.columns.push(component_table.editable_table_common_operation_column(this));
+                    // status column
+                    this.columns.push(component_table.table_column_operation_status(this));
+
                     this.$Message.success('query data_struct success');
                 } catch (e) {
                     console.log(e);
@@ -143,8 +151,11 @@
                 }
                 this._data.loading = false;
             },
-            async init_table(){
+            async init_table() {
 
+            },
+            init_insert_() {
+                component_table.init_insert_(this);
             },
         },
         async created() {

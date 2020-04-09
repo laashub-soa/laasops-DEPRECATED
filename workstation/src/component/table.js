@@ -210,6 +210,7 @@ function table_column_operation_status(component) {
     width: table_column_operation_status_width,
     resizable: true,
     render: (h, params) => {
+      if (component._data.is_in_opt) return [];
       const div_data = [];
       // event_type:current_status
       const data_status_data = component.data_status[params.index];
