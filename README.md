@@ -1,7 +1,5 @@
 # 目标: 上生产
 
-refactor the last version repo to vue2/python restapi (60%)
-
 DataBoard: 
 
 ​	authorized login: github
