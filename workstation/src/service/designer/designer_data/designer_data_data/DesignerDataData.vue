@@ -3,16 +3,14 @@
     <DirectoryDescription :directory_id="directory_id"></DirectoryDescription>
 <!--    <Button @click="init_table">Refresh</Button>-->
 
-    <i-button type="primary"
-              @click="init_table">search</i-button>
-    <i-button type="primary"
-              @click="init_table">add</i-button>
+    <i-button @click="init_table">SEARCH</i-button>
+    <i-button @click="init_table">ADD</i-button>
 
     <!--search area-->
     <divider orientation="left" style="font-size: 12px;">
       <i-button
         @click="function(){this.search.expand_status=!this.search.expand_status;}">
-        click to expand/collapse search condition area</i-button></divider>
+        EXPAND/COLLAPSE SEARCH CONDITION AREA</i-button></divider>
     <div v-if="search.expand_status" style="margin-left: 10px">
       <!--dynamic search form-->
       <i-form :model="search.data"
@@ -129,7 +127,7 @@
                 await component_table.cancel_opt_data(this);
                 this._data.loading = true;
                 try {
-                    const data_struct_list = (await designer_data_struct.select_({'did': this.directory_id})).data;
+                    const data_struct_list = await designer_data_struct.select_({'did': this.directory_id});
                     const column_width = component_table.calculate_table_column_width(false, this, data_struct_list.length);
                     for (const item of data_struct_list) {
                         const code = item["code"];
