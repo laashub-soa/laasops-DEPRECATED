@@ -186,6 +186,7 @@
                     for (const item of search_list) {
                         const prop = item["prop"];
                         const v_model = item["v_model"];
+                        if (!v_model || v_model == '') continue;
                         request_data.search[prop] = v_model;
                     }
                     const resp_data = await designer_data_data.select_(request_data);
