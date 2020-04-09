@@ -131,6 +131,10 @@
                 this._data.loading = true;
                 try {
                     const data_struct_list = await designer_data_struct.select_({'did': this.directory_id});
+                    if (data_struct_list < 1) {
+                        this._data.loading = false;
+                        return;
+                    }
                     const column_width = component_table.calculate_table_column_width(false, this, data_struct_list.length);
                     // basic column
                     for (const item of data_struct_list) {
