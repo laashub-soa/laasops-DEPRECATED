@@ -1,12 +1,14 @@
 <template>
 <div>
-  Dashboard
+  <DataBoard></DataBoard>
 </div>
 </template>
 
 <script>
+    import DataBoard from "./databoard/DataBoard.vue";
     export default {
-        name: "Dashboard"
+        name: "Dashboard",
+        components: {DataBoard}
     }
 </script>
 
