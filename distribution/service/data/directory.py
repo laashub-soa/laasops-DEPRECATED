@@ -30,12 +30,23 @@ def insert():
     pid = request_data["pid"]
     name = request_data["name"]
 
-    return json.dumps(mymysql.execute("""
-        insert into designer_data_directory(pid, name) values (%(pid)s, %(name)s)
-    """, {
+    insert_result = mymysql.execute("""
+            insert into designer_data_directory(pid, name) values (%(pid)s, %(name)s)
+        """, {
         "pid": pid,
         "name": name,
+    })
+
+    json.dumps(mymysql.execute("""
+                CREATE TABLE designer_data_data_%(id)s (
+                    id int(11) NOT NULL AUTO_INCREMENT,
+                    PRIMARY KEY (id)
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+        """, {
+        "id": insert_result,
     }))
+
+    return json.dumps(insert_result)
 
 
 @app.route('/update', methods=['POST'])
@@ -80,6 +91,10 @@ def delete():
             """, {"id": _id})
 
     def delete_one_level(_id):
+        # drop table designer_data_data_
+        mymysql.execute("""
+                    drop table designer_data_data_%(id)s
+                    """, {"id": _id})
         return mymysql.execute("""
             delete
             from designer_data_directory
