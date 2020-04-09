@@ -160,7 +160,33 @@
                 await component_table.cancel_opt_data(this);
                 this._data.loading = true;
                 try {
-                    this._data.data = await designer_data_data.select_({'did': this.directory_id});
+                    /*                    const request_standard = {
+                                            page_current: -1,
+                                            page_size: 10,
+                                            search: {},
+                                            order: [],
+                                        }
+                                        const resp_standard = {
+                                            page_total: 10,
+                                            data: [],
+
+                                            page_current: -1,
+                                            page_size: 10,
+                                            search: {},
+                                            order: [],
+                                        }*/
+                    // page & search (order,search with express)
+                    const request_data = {
+                        page_current: this._data.page.current,
+                        page_size: this._data.page.page_size,
+                        search:{
+                            'did': this.directory_id
+                        },
+                    };
+                    const resp_data = await designer_data_data.select_(request_data);
+                    this._data.page.total = resp_data['page_total'];
+                    this._data.data = resp_data['data'];
+
                     this.$Message.success('query data_struct success');
                 } catch (e) {
                     console.log(e);
