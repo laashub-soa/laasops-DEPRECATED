@@ -140,14 +140,14 @@
                     for (const item of data_struct_list) {
                         const code = item["code"];
                         const meaning = item["meaning"];
-                        this.column_keys.push(code);
-                        this.columns.push(component_table.editable_table_common_column(this, meaning, code, column_width));
-                        this.search.template.push({"label": meaning, "prop": code, "v_model": ""});
+                        this._data.column_keys.push(code);
+                        this._data.columns.push(component_table.editable_table_common_column(this, meaning, code, column_width));
+                        this._data.search.template.push({"label": meaning, "prop": code, "v_model": ""});
                     }
                     // operation column
-                    this.columns.push(component_table.editable_table_common_operation_column(this));
+                    this._data.columns.push(component_table.editable_table_common_operation_column(this));
                     // status column
-                    this.columns.push(component_table.table_column_operation_status(this));
+                    this._data.columns.push(component_table.table_column_operation_status(this));
 
                     this.$Message.success('query data data columns success');
                 } catch (e) {
@@ -179,10 +179,15 @@
                     const request_data = {
                         page_current: this._data.page.current,
                         page_size: this._data.page.page_size,
-                        search:{
-                            'did': this.directory_id
-                        },
+                        search: {'did': this.directory_id},
                     };
+                    // gen search
+                    const search_list = this._data.search.template;
+                    for (const item of search_list) {
+                        const prop = item["prop"];
+                        const v_model = item["v_model"];
+                        request_data.search[prop] = v_model;
+                    }
                     const resp_data = await designer_data_data.select_(request_data);
                     this._data.page.total = resp_data['page_total'];
                     this._data.data = resp_data['data'];
