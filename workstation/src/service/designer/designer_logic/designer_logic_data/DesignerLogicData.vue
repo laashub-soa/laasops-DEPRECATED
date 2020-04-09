@@ -74,9 +74,9 @@
                         "Esc": function (cm) {
                             if (cm.getOption("fullScreen")) cm.setOption("fullScreen", false);
                         },
-                        'Ctrl-S': function () {
+                        'Ctrl-S': async function () {
                             // update_designer_logic_data();
-                            component.update_(component);
+                            await component.update_(component);
                         }
                     },
                 },
@@ -105,10 +105,14 @@
                     this.$Message.error(e.response.data);
                 }
             },
-            update_(component) {
-                console.log(component._data.code);
-                const designer_logic_data = {};
-                // designer_logic_data.update_(designer_logic_data);
+            async update_(component) {
+                try {
+                    await designer_logic_data.update_({'id': component._data.id, 'file': component._data.code});
+                    this.$Message.success('update logic data success');
+                } catch (e) {
+                    console.log(e);
+                    this.$Message.error(e.response.data);
+                }
             },
         },
         computed: {
