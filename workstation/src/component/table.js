@@ -214,6 +214,7 @@ function table_column_operation_status(component) {
       const div_data = [];
       // event_type:current_status
       const data_status_data = component.data_status[params.index];
+      if (!data_status_data) return []; // TODO temp
       const data_status = data_status_data["status"];
       let primary_str = "info";
       if ("FINISH" == data_status) {

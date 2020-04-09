@@ -157,7 +157,16 @@
                 this._data.loading = false;
             },
             async init_table() {
-
+                await component_table.cancel_opt_data(this);
+                this._data.loading = true;
+                try {
+                    this._data.data = await designer_data_data.select_({'did': this.directory_id});
+                    this.$Message.success('query data_struct success');
+                } catch (e) {
+                    console.log(e);
+                    this.$Message.error(e.response.data);
+                }
+                this._data.loading = false;
             },
             init_insert_() {
                 component_table.init_insert_(this);
