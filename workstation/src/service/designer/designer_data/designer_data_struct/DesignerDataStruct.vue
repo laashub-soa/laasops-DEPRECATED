@@ -133,25 +133,8 @@
                 }
                 this._data.loading = false;
             },
-            init_insert_() {
-                // can not continuous multiple times add/update
-                if (this._data.is_in_opt) {
-                    this.$Message.error("can not continuous multiple times add/update");
-                    return;
-                }
-                this._data.is_in_opt = true;
-                this._data.opt_name = "insert";
-
-                // construct column
-                const temp_data_one = {};
-                for (const item of this._data.columns) {
-                    const key = item["key"];
-                    if (key && key != "") {
-                        temp_data_one[key] = "";
-                    }
-                }
-                this._data.opt_line = this._data.data.length;
-                this._data.data.push(temp_data_one);
+            init_insert_(){
+                component_table.init_insert_(this);
             },
             async insert_(component, data_struct) {
                 try {

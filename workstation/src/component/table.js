@@ -33,7 +33,7 @@ function calculate_table_column_width(is_in_designer, component, column_number) 
   return (right_window_width - editable_table_common_operation_column_width - table_column_operation_status_width_temp - nav_area_width) / column_number;
 }
 
-function editable_table_common_column(component, title, key,column_width) {
+function editable_table_common_column(component, title, key, column_width) {
   return {
     title: title,
     key: key,
@@ -262,6 +262,28 @@ function table_column_operation_status(component) {
   };
 }
 
+function init_insert_(component) {
+  // can not continuous multiple times add/update
+  if (component._data.is_in_opt) {
+    component.$Message.error("can not continuous multiple times add/update");
+    return;
+  }
+  component._data.is_in_opt = true;
+  component._data.opt_name = "insert";
+
+  // construct column
+  const temp_data_one = {};
+  for (const item of component._data.columns) {
+    const key = item["key"];
+    if (key && key != "") {
+      temp_data_one[key] = "";
+    }
+  }
+  component._data.opt_line = component._data.data.length;
+  component._data.data.push(temp_data_one);
+}
+
+
 // TODO improvement: memory table column width for open again
 // TODO improvement: lock button on table column, click it can make the column fix to left
 export default {
@@ -270,4 +292,5 @@ export default {
   editable_table_common_column,
   calculate_table_column_width,
   cancel_opt_data,
+  init_insert_,
 }
