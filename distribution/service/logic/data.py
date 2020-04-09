@@ -4,12 +4,26 @@ from flask import Blueprint
 
 from ...component import form
 from ...component import mymysql
-from ...exception import MyServiceException
 
 app = Blueprint('distribution_logic_data', __name__,
                 url_prefix='/distribution/logic/data')
 
 
-@app.route('/insert', methods=['POST'])
-def insert():
-    request_data = form.check(["file"])
+@app.route('/select', methods=['POST'])
+def select():
+    request_data = form.check(["did"])
+    return json.dumps(mymysql.execute("""
+        select id, file
+        from designer_logic_data
+        where did = %(did)s
+    """, request_data))
+
+
+@app.route('/update', methods=['POST'])
+def update():
+    request_data = form.check(["id", "file"])
+    return json.dumps(mymysql.execute("""
+        update designer_logic_data
+        set file = %(file)s
+        where id = %(id)s
+    """, request_data))

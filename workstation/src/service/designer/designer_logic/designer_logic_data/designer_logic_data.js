@@ -1,3 +1,19 @@
+import axios from "axios";
+
+async function select_(data_struct) {
+  let net_request_result = await axios.post("/distribution/logic/data/select", data_struct);
+  if (!net_request_result || !net_request_result.status || net_request_result.status != 200 || !net_request_result.data) return;
+  return net_request_result.data;
+}
+
+
+async function update_(data_struct) {
+  let net_request_result = await axios.post("/distribution/logic/data/update", data_struct);
+  if (!net_request_result || !net_request_result.status || net_request_result.status != 200 || !net_request_result.data) return;
+  return net_request_result.data;
+}
+
+
 function get_standard_content() {
   return `from engine import Data
 from engine import Runtime
@@ -43,5 +59,7 @@ data_define = {
 }
 
 export default {
-  get_standard_content
+  get_standard_content,
+  select_,
+  update_,
 }
