@@ -19,6 +19,7 @@ def init(mysql_config):
 
 
 def execute(sql, parameters={}):
+    print('sql: ', sql)
     try:
         with closing(mymysql.db_pool.connection()) as conn:
             with closing(conn.cursor()) as cursor:
