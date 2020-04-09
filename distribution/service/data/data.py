@@ -30,8 +30,9 @@ resp_standard = {
 
 @app.route('/select', methods=['POST'])
 def select():
-    request_data = form.check()
-    did = request_data['search']['did']
+    request_data = form.check(['search'])
+    search = request_data['search']
+    did = search['did']
     if request_data.__contains__('page_current'):
         page_current = request_data['page_current']
         if page_current < 1:
@@ -52,10 +53,20 @@ def select():
         order = []
 
     designer_data_data_table_name = 'designer_data_data_' + str(did)
+    select_value = {}
+    # where
     select_sql_where = ''
+    for item in search:
+        select_value[item] = search[item]
+        if 'did' == item:
+            continue
+        select_sql_where += ' and ' + item + ' = %(' + item + ')s'
+        select_value[item] = search[item]
+
     # page
     page_total = mymysql.execute(
-        'select count(1) as page_total from ' + designer_data_data_table_name + ' where 1 = 1' + select_sql_where)
+        'select count(1) as page_total from ' + designer_data_data_table_name + ' where 1 = 1 ' + select_sql_where,
+        select_value)
     page_total = page_total[0]['page_total']
     select_sql_page = " LIMIT " + str(((page_current - 1) * page_size)) + ", " + str(page_size)
 
@@ -68,8 +79,10 @@ def select():
     select_sql_keys = select_sql_keys[:len(select_sql_keys) - 2]
 
     # data
-    select_sql = 'select ' + select_sql_keys + ' from ' + designer_data_data_table_name + select_sql_page
-    data = mymysql.execute(select_sql, request_data)
+    select_sql = 'select ' + select_sql_keys + ' from ' + designer_data_data_table_name + ' where 1 = 1 ' \
+                 + select_sql_where + select_sql_page
+    print(select_sql)
+    data = mymysql.execute(select_sql, select_value)
     #
     return json.dumps({
         'page_total': page_total,
