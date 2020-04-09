@@ -75,6 +75,7 @@
     import designer_data_data from "./data_board_data";
     import component_table from "../../../../component/table";
     import designer_data_logic_trigger from "../../../designer/designer_data_logic_trigger";
+    import engine from "./engine";
 
     const update_description_btn_str = "update description";
     const save_description_btn_str = "save description";
@@ -133,7 +134,7 @@
                 },
                 data_event_2_logic: {
                     cur_choose: {
-                        value: '',
+                        value: [],
                         logic_id: '',
                         func_name: '',
                     },
@@ -229,8 +230,9 @@
             async insert_(component, data_data) {
                 try {
                     if (!await this.associate_data_logic_event(component, data_data, 'insert')) return;
-                    await designer_data_data.insert_(data_data);
+                    const insert_result = await designer_data_data.insert_(data_data);
                     component.$Message.success('insert data data success');
+                    await component.trigger_engine(component, 'insert', insert_result);
                     await component.init_table();
                 } catch (e) {
                     console.log(e.response.data);
@@ -242,6 +244,7 @@
                     if (!await this.associate_data_logic_event(component, data_data, 'update')) return;
                     await designer_data_data.update_(data_data);
                     component.$Message.success('update data data success');
+                    await component.trigger_engine(component, 'update', data_data['id']);
                     await component.init_table();
                 } catch (e) {
                     console.log(e.response.data);
@@ -253,6 +256,7 @@
                     if (!await this.associate_data_logic_event(component, data_data, 'delete')) return;
                     await designer_data_data.delete_(data_data);
                     component.$Message.success('delete data data success');
+                    await component.trigger_engine(component, 'delete', data_data['id']);
                     await component.init_table();
                 } catch (e) {
                     console.log(e.response.data);
@@ -302,6 +306,26 @@
                 return result;
 
             },
+            async trigger_engine(component, type, data_data_id) { // insert, update, delete
+                try {
+                    const request_data = {
+                        "data_id": component.directory_id,
+                        "data_data_id": data_data_id,
+                        "type": type,
+                    };
+
+                    if (!component._data.data_event_2_logic.cur_choose.value || component._data.data_event_2_logic.cur_choose.value.length <= 0) return;
+                    const logic_func_name = component._data.data_event_2_logic.cur_choose.value[0];
+                    const logic_func_name_arr = logic_func_name.split(":");
+                    request_data["logic_id"] = logic_func_name_arr[0];
+                    request_data["func_name"] = logic_func_name_arr[1];
+                    await engine.trigger(request_data);
+                    component.$Message.success('trigger_engine success');
+                } catch (e) {
+                    console.log(e.response.data);
+                    component.$Message.error(e.response.data);
+                }
+            }
         },
         async created() {
             await this.init_associate();

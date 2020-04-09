@@ -43,9 +43,9 @@ from distribution.service.data import struct as distribution_data_struct
 from distribution.service.data import data as distribution_data_data
 from distribution.service.logic import directory as distribution_logic_directory
 from distribution.service.logic import data as distribution_logic_data
-
 from distribution.service.data_logic import io as distribution_data_logic_io
 from distribution.service.data_logic import trigger as distribution_data_logic_trigger
+from engine import engine
 
 app.register_blueprint(distribution_data_directory.app)
 app.register_blueprint(distribution_data_struct.app)
@@ -54,6 +54,7 @@ app.register_blueprint(distribution_logic_directory.app)
 app.register_blueprint(distribution_logic_data.app)
 app.register_blueprint(distribution_data_logic_io.app)
 app.register_blueprint(distribution_data_logic_trigger.app)
+app.register_blueprint(engine.app)
 
 # init the log
 if not os.path.exists("logs"):
