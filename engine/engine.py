@@ -1,8 +1,9 @@
 import json
 
-from flask import Blueprint, request, make_response
+from flask import Blueprint, make_response
 
-# from distribution.component import mymysql
+from distribution.component import mymysql
+from distribution.component import form
 from distribution.exception import MyServiceException
 from .component.myengine import MyEngine
 
@@ -13,17 +14,7 @@ app = Blueprint('engine_engine', __name__,
 @app.route('/trigger', methods=['POST'])
 def trigger():
     try:
-        request_data = json.loads(request.get_data())
-        if not request_data.__contains__("data_id"):
-            raise MyServiceException("missing param: data_id")
-        if not request_data.__contains__("data_data_id"):
-            raise MyServiceException("missing param: data_data_id")
-        if not request_data.__contains__("type"):
-            raise MyServiceException("missing param: type")
-        if not request_data.__contains__("logic_id"):
-            raise MyServiceException("missing param: logic_id")
-        if not request_data.__contains__("func_name"):
-            raise MyServiceException("missing param: func_name")
+        request_data = form.check(['data_id', 'data_data_id', 'type', 'logic_id', 'func_name'])
 
         data_id = request_data["data_id"]
         data_data_id = request_data["data_data_id"]
@@ -38,3 +29,26 @@ def trigger():
         custom_res = make_response(e.msg)
         custom_res.status = "500"
         return custom_res
+
+
+@app.route('/select_engine_data_logic_trigger_status_details_status', methods=['POST'])
+def select_engine_data_logic_trigger_status_details_status():
+    request_data = form.check(['data_id', 'data_data_id'])
+    return json.dumps(mymysql.execute("""
+                select id,
+                       data_id,
+                       data_data_id,
+                       data_event_type,
+                       logic_id,
+                       func_name,
+                       DATE_FORMAT(create_time, '%%Y-%%m-%%d %%T') as create_time_str,
+                       status
+                from engine_data_logic_trigger_data_status
+                where data_id = %(data_id)s and data_data_id = %(data_data_id)s
+                order by id asc
+    """, request_data))
+
+
+@app.route('/select_engine_data_logic_trigger_status_details_log', methods=['POST'])
+def select_engine_data_logic_trigger_status_details_log():
+    pass

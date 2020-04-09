@@ -247,7 +247,7 @@ function table_column_operation_status(component) {
             // gen data status details tree data
             component.data_status_details.display = true;
             const data_data_id = component.data[params.index]["id"];
-            // await init_engine_data_logic_trigger_data_status_details_status_tree(data_data_id);
+            await component.select_engine_data_logic_trigger_status_details_status(component,data_data_id);
             // await query_engine_data_logic_trigger_data_status_details_log("tree", {"data_data_id": data_data_id});
           }
         }

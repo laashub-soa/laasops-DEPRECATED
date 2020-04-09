@@ -44,8 +44,19 @@
       <div>
         <row>
           <i-col span="6">
-            <div id="engine_data_logic_trigger_data_status_details_status_tree"
-            ></div>
+            <vue-tree-list
+              :model="data_status_details_tree"
+              default-tree-node-name="new"
+              default-leaf-node-name="new"
+              v-bind:default-expanded="true">
+              <span class="icon" slot="addTreeNodeIcon"></span>
+              <span class="icon" slot="addLeafNodeIcon"></span>
+              <span class="icon" slot="editNodeIcon"></span>
+              <span class="icon" slot="delNodeIcon"></span>
+              <span class="icon" slot="leafNodeIcon"></span>
+              <span class="icon" slot="treeNodeIcon"></span>
+            </vue-tree-list>
+
             <!--@on-select-change="load_target_time_log"-->
           </i-col>
           <i-col span="18" style="background: #2b2b2b;color: white">
@@ -70,6 +81,7 @@
 </template>
 
 <script>
+    import {Tree, VueTreeList} from 'vue-tree-list'
     import DirectoryDescription from "../../../../component/directory/DirectoryDescription";
     import designer_data_struct from "../../../designer/designer_data/designer_data_struct/designer_data_struct";
     import designer_data_data from "./data_board_data";
@@ -97,7 +109,8 @@
             },
         },
         components: {
-            DirectoryDescription
+            DirectoryDescription,
+            VueTreeList,
         },
         data() {
             return {
@@ -105,9 +118,9 @@
                 columns: [],
                 data: [],
                 data_status: [],
+                data_status_details_tree: new Tree([]),
                 data_status_details: {
                     display: false,
-                    tree: [],
                     log_list: [],
                 },
                 data_line_backup: {},
@@ -346,11 +359,71 @@
                     component.$Message.error(e.response.data);
                 }
             },
-            async select_data_logic_trigger_status_details_status(component, data_data_id) {
+            async select_engine_data_logic_trigger_status_details_status(component, data_data_id) {
                 component._data.data_status_details.tree = [];
+                try {
+                    let net_request_result = await engine.select_engine_data_logic_trigger_status_details_status({
+                        'data_id': component.directory_id,
+                        'data_data_id': data_data_id,
+                    });
 
+                    `
+data_event:1(1):insert:(time)
+    logic:1:test:(time)
+        START:(time)
+        RUNNING:(time)
+        FINISH:(time)
+        `
+                    let last_data_even_type = "";
+                    let tree_level_data_event;
+                    let tree_level_logic_children;
+                    // component._data.data_status_details.tree = new Tree([]);
+                    const tree_list = [];
+                    let id_temp = 1;
+                    while (net_request_result.length > 0) {
+                        let item = net_request_result.splice(0, 1)[0];
+                        const data_event_type = item["data_event_type"];
+                        if (last_data_even_type != data_event_type) {
+                            last_data_even_type = data_event_type;
+                            tree_level_logic_children = [];
+                            if (tree_level_data_event) {
+                                tree_list.push(tree_level_data_event);
+                            }
+                            tree_level_data_event = null;
+                        }
+                        if (!tree_level_data_event) {
+                            tree_level_data_event = {
+                                'id': id_temp++,
+                                "name": "data_event:{{data_id}}({{data_data_id}}):{{data_event_type}}:({{create_time_str}})".format(item),
+                                "tree_level_type": "data_event",
+                                "tree_level_data": item,
+                                "spread": true,
+                                "children": [{
+                                    'id': id_temp++,
+                                    "name": "logic:{{logic_id}}:{{func_name}}:({{create_time_str}})".format(item),
+                                    "tree_level_type": "logic",
+                                    "tree_level_data": item,
+                                    "spread": true,
+                                    "children": tree_level_logic_children,
+                                }]
+                            };
+                        }
+                        tree_level_logic_children.push({
+                            'id': id_temp++,
+                            "name": "{{status}}:({{create_time_str}})".format(item),
+                            "tree_level_type": "data_status",
+                            "tree_level_data": item,
+                        });
+                    }
+                    tree_list.push(tree_level_data_event);
+                    component._data.data_status_details_tree = new Tree(tree_list);
+                    component.$Message.success('select engine data logic trigger status details status success');
+                } catch (e) {
+                    console.log(e.response.data);
+                    component.$Message.error(e.response.data);
+                }
             },
-            async select_data_logic_trigger_status_details_log(tree_level_type, tree_level_data) {
+            async select_engine_data_logic_trigger_status_details_log(tree_level_type, tree_level_data) {
 
             },
         },
