@@ -72,6 +72,7 @@
 <script>
     import DirectoryDescription from "../../../../component/directory/DirectoryDescription";
     import designer_data_struct from "../designer_data_struct/designer_data_struct";
+    import designer_data_data from "./designer_data_data";
     import component_table from "../../../../component/table";
 
     const update_description_btn_str = "update description";
@@ -144,7 +145,7 @@
                     // status column
                     this.columns.push(component_table.table_column_operation_status(this));
 
-                    this.$Message.success('query data_struct success');
+                    this.$Message.success('query data data columns success');
                 } catch (e) {
                     console.log(e);
                     this.$Message.error(e.response.data);
@@ -156,6 +157,36 @@
             },
             init_insert_() {
                 component_table.init_insert_(this);
+            },
+            async insert_(component, data_data) {
+                try {
+                    await designer_data_data.insert_(data_data);
+                    component.$Message.success('insert data data success');
+                    await component.init_table();
+                } catch (e) {
+                    console.log(e.response.data);
+                    component.$Message.error(e.response.data);
+                }
+            },
+            async update_(component, data_data) {
+                try {
+                    await designer_data_data.update_(data_data);
+                    component.$Message.success('update data data success');
+                    await component.init_table();
+                } catch (e) {
+                    console.log(e.response.data);
+                    component.$Message.error(e.response.data);
+                }
+            },
+            async delete_(component, data_data) {
+                try {
+                    await designer_data_data.delete_(data_data);
+                    component.$Message.success('delete data data success');
+                    await component.init_table();
+                } catch (e) {
+                    console.log(e.response.data);
+                    component.$Message.error(e.response.data);
+                }
             },
         },
         async created() {
