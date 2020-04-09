@@ -71,8 +71,8 @@
 
 <script>
     import DirectoryDescription from "../../../../component/directory/DirectoryDescription";
-    import designer_data_struct from "../designer_data_struct/designer_data_struct";
-    import designer_data_data from "./designer_data_data";
+    import designer_data_struct from "../../../designer/designer_data/designer_data_struct/designer_data_struct";
+    import designer_data_data from "./data_board_data";
     import component_table from "../../../../component/table";
 
     const update_description_btn_str = "update description";

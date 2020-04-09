@@ -58,7 +58,7 @@
 
 <script>
     import Directory from '../../../../component/directory/Directory.vue'
-    import DesignerDataData from "../../../designer/designer_data/designer_data_data/DesignerDataData";
+    import DesignerDataData from "./DataBoardData";
     import {Tabs} from "view-design";
     import DesignerLogicData from "../../../designer/designer_logic/designer_logic_data/DesignerLogicData";
 
