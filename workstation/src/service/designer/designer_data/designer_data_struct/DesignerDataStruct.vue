@@ -64,6 +64,8 @@
     import designer_data_struct from "./designer_data_struct";
     import component_table from "../../../../component/table";
     import DirectoryDescription from "../../../../component/directory/DirectoryDescription";
+    import designer_data_logic_io from "../../designer_data_logic_io";
+    import designer_data_logic_trigger from "../../designer_data_logic_trigger";
 
     let column_width = component_table.calculate_table_column_width(true, this, 3);
 
@@ -133,7 +135,19 @@
                 }
                 this._data.loading = false;
             },
-            init_insert_(){
+            async init_associate() {
+                // io
+                const designer_data_logic_io_list = await designer_data_logic_io.select_({'data_id': this.directory_id});
+                for (const item of designer_data_logic_io_list) {
+                    this._data.associate.io[item["type"]].push(item["logic_id"]);
+                }
+                // trigger
+                const designer_data_logic_trigger_list = await designer_data_logic_trigger.select_({'data_id': this.directory_id});
+                for (const item of designer_data_logic_trigger_list) {
+                    this._data.associate.trigger[item["type"]].push(item["logic_id"] + ":" + item["func_name"]);
+                }
+            },
+            init_insert_() {
                 component_table.init_insert_(this);
             },
             async insert_(component, data_struct) {
@@ -169,6 +183,7 @@
         },
         async created() {
             await this.init_table();
+            await this.init_associate();
         }
     }
 </script>
