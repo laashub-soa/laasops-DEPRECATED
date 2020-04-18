@@ -1,24 +1,10 @@
-# 目标: 上生产
-
-DataBoard: 
-
-​	authorized login: github
-
-​	data_struct/logic_data: push/pull/fetch
-
-​	display&search public
-
-
-
-​	finish single scenes
-
 # 总体来说
 
 从数据的角度驱动由分发、组装由数据和指令库构造的逻辑
 
 Workstation -> Distribution
 
-​					   -> Engine
+Workstation -> Engine
 
 Engine		   -> Distribution
 
