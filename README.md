@@ -1,6 +1,8 @@
-# 总体来说
+[English](README.md) | [中文](README_zh_CN.md)
 
-从数据的角度驱动由分发、组装由数据和指令库构造的逻辑
+# Overall
+
+Logic assembly and distribution based on the instruction library from a data-driven perspective
 
 Workstation -> Distribution
 
@@ -10,97 +12,97 @@ Engine		   -> Distribution
 
 ![simple_architecture](docs/images/simple_architecture.png)
 
-# LaasHub 组成元素
+# LaasHub' Components
 
-## 工作站	
+## Workstation
 
-### 设计器
+### Designer
 
 #### Data
 
-##### 形状
+##### Shape
 
-##### 描述
+##### Description
 
-##### 属性
+##### Attribution
 
-###### 属性名
+###### Attribution Name
 
-###### 属性类型(基本/引用)
+###### Attribution Type(base/quote)
 
-###### 属性约束
+###### Attribution Constraint
 
-###### 默认值
+###### Default Value
 
-##### 包含类
+##### Include/Extension Attribution
 
-##### 输入/输出管道
+##### Input/Output Channel
 
-##### 版本化、可复制
+##### Versioning/Forkable
 
-##### 套版
+##### Board Template
 
 #### Command/Logic
 
-##### 描述
+##### Description
 
-##### 语言:版本:依赖包
+##### Language: Version: Dependency Library
 
-##### 输入数据
+##### Input Data
 
-##### 输出数据
+##### Output Data
 
-##### 订阅数据
+##### Subscribe Data
 
-##### 触发数据
+##### Trigger Data
 
-##### 版本化、可复制
+##### Versioning/Forkable
 
-### 面板
+### DashBoard
 
-#### 数据面板
+#### DataBoard
 
-##### 数据操作(编排)
+##### Data Operation(Orchestration)
 
-##### 数据展示
+##### Data Display
 
-###### 套版
+###### Board Template
 
-###### 拓扑
+###### Topology
 
-##### 数据状态
+##### Data Status
 
-###### 日志
+###### Logging
 
-###### 监控
+###### Monitoring
 
-###### 告警
+###### Alerting
 
-###### 自愈
+###### Self-healing
 
-#### 用户面板
+#### UserBoard
 
-##### 用户
+##### User
 
-##### 角色
+##### Role
 
-##### 流程
+##### Progress
 
-##### 权限
+##### Authority
 
-## 分发库
+## Distribution
 
-分发器分发逻辑业务
+Distribution distribute the logic business
 
-## 执行引擎
+## Engine
 
-引擎执行逻辑业务
+engine invoke logic business
 
-# 产品文档
+# Product Documentation
 
-## [点击打开在线体验](http://129.211.59.74)
+## [Click To Open Preview In Online](http://129.211.59.74)
 
-## 目前进度
+## Current Progress
 
 ![simple_architecture](docs/current_progress/2020-04-12_14-04/index.png)
 
