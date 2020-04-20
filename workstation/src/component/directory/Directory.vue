@@ -89,7 +89,7 @@
             },
 
             async onChangeName(params) {
-                // TODO fix_bug: not every event need to response
+                // if ('blur' != params["eventType"]) return;
                 const input_name_result = params["newName"];
                 if ("" == input_name_result) {
                     this.$Message.error("name can't be blank character");
