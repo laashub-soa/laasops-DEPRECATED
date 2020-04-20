@@ -1,11 +1,7 @@
 mysql:
-  host: 192.168.121.137
+  host: 192.168.121.138
   port: 3306
   database: laashub
   user: laashub
   password: laashub123
   charset: utf8mb4
-github:
-  oauth_app:
-    CLIENT_ID: 9734d3155d975a20dc2a
-    CLIENT_SECRET: 69d7f0c987299f908c60b07e66e35c2d20f7abb2
