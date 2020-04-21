@@ -73,7 +73,7 @@ CREATE TABLE `engine_data_logic_trigger_data_status` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-CREATE TABLE `designer_logic_extra_directory` (
+CREATE TABLE `designer_logic_hyper_fusion_directory` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `lid` int(11) NOT NULL,
   `pid` int(11) DEFAULT NULL,
@@ -82,7 +82,7 @@ CREATE TABLE `designer_logic_extra_directory` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-CREATE TABLE `designer_logic_extra_data` (
+CREATE TABLE `designer_logic_hyper_fusion_data` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `lid` int(11) NOT NULL,
   `did` int(11) NOT NULL,
