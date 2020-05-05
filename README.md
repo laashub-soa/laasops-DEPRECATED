@@ -100,8 +100,6 @@ engine invoke logic business
 
 # Product Documentation
 
-## [Click To Open Preview In Online](http://129.211.59.74)
-
 ## Current Progress
 
 ![simple_architecture](docs/current_progress/2020-04-12_14-04/index.png)
