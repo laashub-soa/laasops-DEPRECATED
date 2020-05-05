@@ -2,7 +2,7 @@
   <div style="height: 100vh">
     <div>
       <Menu style="font-size: 10px" mode="horizontal" theme="light" :active-name="menu_active_name"
-            @on-select="function(name){menu_active_name = name}">
+            @on-select="on_menu_select">
         <MenuItem :name="item" width="40px" style="user-select:none;text-transform:uppercase;"
                   v-for="item in service_type_list">
           {{item}}
@@ -95,6 +95,13 @@
             }
         },
         methods: {
+            on_menu_select(name) {
+                this._data.menu_active_name = name;
+                const designer_menu_selected = localStorage.getItem('designer_menu_selected');
+                if (name != designer_menu_selected) {
+                    localStorage.setItem('designer_menu_selected', name);
+                }
+            },
             beforeRemove(index) {
                 const component = this;
                 return new Promise(function (resolve, reject) {
@@ -111,7 +118,7 @@
                                 break;
                             }
                             index_increment--;
-                            continue;
+
                         }
                     }
                     component._data.tab_pane[real_index].visible = false;
@@ -176,6 +183,14 @@
                 });
                 this._data.tab_pane_cur = this._data.tab_pane.length - 1;
             },
+        },
+        created() {
+            // reshow the memory
+            const last_menu_selected = localStorage.getItem('designer_menu_selected');
+            if (['data', 'logic'].indexOf(last_menu_selected) > -1) {
+                this._data.menu_active_name = last_menu_selected;
+            }
+
         },
     }
 </script>

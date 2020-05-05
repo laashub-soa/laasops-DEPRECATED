@@ -72,3 +72,21 @@ CREATE TABLE `engine_data_logic_trigger_data_status` (
   `status` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT 'START',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE `designer_logic_hyper_fusion_directory` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `lid` int(11) NOT NULL,
+  `pid` int(11) DEFAULT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `description` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE `designer_logic_hyper_fusion_data` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `lid` int(11) NOT NULL,
+  `did` int(11) NOT NULL,
+  `file` mediumtext COLLATE utf8mb4_unicode_ci,
+  `update_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
